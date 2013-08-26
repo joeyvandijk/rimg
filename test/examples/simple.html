@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>simple test</title>
+        <script>
+            var RimgBreakpoint = '-tiny 320w 1x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';
+        </script>
+        <script src="rimg.min.js"></script>
+        <script>
+            var item = 0;
+            function click(){
+                var img = document.createElement('img');
+                img.className = 'test'+item;
+                img.innerHTML = 'Een andere test'+item;
+                img.setAttribute('data-src','images/image2.jpg');
+                document.body.appendChild(img);
+                item++;
+            }
+        </script>
+        <style type="text/css">
+            img{
+            	display: block;
+                width: 100%;
+                height: auto;
+                border: 1px solid #333;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Simple welcome</h1>
+        <p>Just a simple test with responsive images. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching.</p>
+        <img data-src="images/image.jpg" data-width="320" data-height="212" id="second"/>
+        <!-- OPTIONAL: -->
+        <noscript>
+            <img src="images/image-small.jpg">
+        </noscript>
+    </body>
+</html>    

@@ -1,0 +1,16 @@
+{
+    "name": "boydvandijk-boek-preview",
+    "version": "0.0.1",
+    "description": "ERROR: No README.md file found!",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": "",
+    "author": "Joey van Dijk",
+    "dependencies":{
+        "send":"0.1.x",
+        "url":"0.7.x"
+    },
+    "license": "TT"
+}

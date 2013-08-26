@@ -1,0 +1,24 @@
+{
+    "name": "responsive-images",
+    "version": "0.0.1",
+    "description": "ERROR: No README.md file found!",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": "",
+    "author": "Joey van Dijk",
+    "dependencies":{
+        "grunt-contrib-clean":"0.4.x",
+        "grunt-contrib-compress":"0.5.x",
+        "grunt-contrib-uglify":"0.2.x",
+        "grunt-contrib-copy":"0.4.x",
+        "grunt-notify":"0.2.x"
+    },
+    "devDependencies":{
+        "grunt":"~0.4.1",
+        "grunt-contrib-jshint":"~0.4.3",
+        "grunt-contrib-nodeunit":"~0.1.2"
+    },
+    "license": "TT"
+}
