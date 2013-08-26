@@ -10,8 +10,12 @@ Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/sr
 1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
 2. Define initial breakpoints, like 
 ```javascript
-var RimgBreakpoint = '-tiny 320w 1x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';``` 
+var RimgBreakpoint = '-tiny 320w 1x, -small 480w 1x, -small-retina 480w 2x,
+-medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, 
+-large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';
+``` 
 before you load the minified version of Rimg.
+
 3. Load the script, like ```<script src="https://raw.github.com/joeyvandijk/rimg/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tags.
 
 will result in something like:
@@ -53,10 +57,12 @@ to see the examples.
 * **Rimg.execute(target)** (Element) - provide a DOM element to determine if it is or has ```<img>``` elements to change.
 * **Rimg.configure(breakpoints)** (String) - provide the breakpoints so Rimg can determine which picture to use.
 * **Rimg.disableIntrospection()** - prevents scan for images after a DOM-load or DOM-changes or a resize, so manually select <img> to adjust.
-* Use 
+* Use the example below before loading the script itself to set initial breakpoints. 
+
 ```javascript
-var RimgBreakpoint = '-small 480w 1x, -small-retina 480w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';``` 
-before loading the script itself to set initial breakpoints. 
+var RimgBreakpoint = '-small 480w 1x, -small-retina 480w 2x, -regular 768w 1x, 
+-regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';
+``` 
 
 ## Breakpoints
 Define a custom filenaming setup. It is based on the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification. For example:
