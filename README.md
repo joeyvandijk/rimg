@@ -10,7 +10,7 @@ Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/sr
 1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
 2. Define initial breakpoints, like 
 ```javascript
-var RimgBreakpoint = '-tiny 320w 1x, -small 480w 1x, -small-retina 480w 2x,
+var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x,
 -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, 
 -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';
 ``` 
@@ -22,7 +22,7 @@ will result in something like:
 
 ```html
 <script>
-var RimgBreakpoint = '-tiny 320w 1x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
+var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
 <script async src="//cdnjs.com/rimg"></script>
 ...
 <img data-src="image.jpg"/>
@@ -41,6 +41,7 @@ to see the examples.
 * [Mediaqueries](http://caniuse.com/#feat=css-mediaqueries) support in the browser you want to support.
 * A clear **filenaming strategy** that you will use with all your image-filenames you use.
 * Use **CSS** or ```style=""``` to adjust ```<img>``` dimensions and Rimg will only listen to that values.
+* Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but the viewport-meta-tag to let Rimg do the work.
 
 
 # Documentation
@@ -81,6 +82,8 @@ in the situation it uses the `-small 480w 1x` breakpoint you defined for example
 
 The used ```var RimgBreakpoint = '-small 480w 1x, -small-retina 480w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';``` gives you all the freedom by defining 1 (or more) breakpoints with the flexibility to add specific image-files for retina-screens like the iPad, iPhone or Samsung Galaxy Sxxx, etc. 
 
+While the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification only references `2x` as maximum pixel aspect ratio, this is not current (`3x`, `4x` already available) so you may add special images for devices with `3x` as `devicePixelRatio`.
+
 You may skip the retina option or skip certain breakpoints (`480w` or `768w`) or even add weird ones (like ```-special 456w 1x```).
 
 The `w` in `480w` defines the width property to check. During development of responsive websites I haven't found many examples to use `h` for the height, but I did found issues with javascript returning `0` as the height of non-loaded images. Even when the height is set in `%`.
@@ -95,19 +98,20 @@ Please do test, check and come with pull requests/issues to further extend/stabi
 
 
 # Changelog
+0.2.0 retina-fix + tests made  
 0.1.0 initial release
 
 # FAQ
-See the [Wiki](https://github.com/joeyvandijk/rimg/wiki/FAQ) for more information.
+See the [Wiki](wiki/FAQ) for more information.
 
 # TODO
-- [ ] (optional) bandwidth detection solution
-- [ ] (optional) srcset support
-- [ ] tests/examples for retina-support
-- [ ] (optional) namespace change 
-- [ ] FAQ on the wiki explaining my choices
+- [ ] bandwidth detection solution (optional) 
+- [ ] srcset support (optional) 
+- [x] tests/examples for retina-support
+- [ ] namespace change (optional) 
+- [x] FAQ on the wiki explaining my choices
 - [ ] add to https://github.com/cdnjs/cdnjs
-- [ ] last option - retina detection
-- [ ] use issues: remove remark or not?
-- [ ] data-src changed (not-cross browser support?)
-- [ ] (optional) code refactoring (async?)
+- [x] last option - retina detection
+- [ ] use issues: remove initial remark or not?
+- [ ] data-src attribute changed (not-cross browser support?)
+- [ ] code refactoring (async? / optional)

@@ -33,17 +33,33 @@
                         height: -1,
                         pixelRatio: [],
                         getSrc: function(value){
-                            var s = 0;
-                            var sl = this.pixelRatio.length;
-                            while(s<sl){
-                                if(value == this.pixelRatio[s]){
-                                    return this.src[s];
+                            var ratios = this.pixelRatio.length;
+                            if(ratios === 0){
+                                hidden.status = 'error';
+                                console.error('Rimg: missing a pixelRatio definition, check the documentation.');
+                                return '';
+                            }else if(ratios === 1){
+                                return this.src[0];
+                            }else if(ratios === 2){
+                                if(value <= 1){
+                                    return this.src[0];
+                                }else{
+                                    return this.src[1];
                                 }
-                                s++;
+                            }else{
+                                //determine which pixelRatio matches most closely with current device pixel ratio.
+                                var s = 0;
+                                var sl = this.pixelRatio.length;
+                                while(s<sl){
+                                    //possible that pixelRatio is 1.5 or 2.25
+                                    if(value == this.pixelRatio[s] || Math.round(value) == this.pixelRatio[s]){
+                                        return this.src[s];
+                                    }
+                                    s++;
+                                }
+                                //use last reference
+                                return this.src[ratios-1];
                             }
-
-                            //TODO only 1 definition always?
-                            return this.src[0];
                         }
                     };
                     var parts = bp.split(' ');
@@ -139,7 +155,7 @@
 //            console.log('   Pixel: '+window.devicePixelRatio+'x');
             //TODO check connection speed - or not? > listener with ms of images (could be slow connection or large image)
             var orientation = 'landscape';
-            //TODO not needed?
+            //TODO not needed? IE10 support only, different then with mediaqueries! > http://caniuse.com/matchmedia
             if (window.matchMedia != null && window.matchMedia("(orientation: portrait)").matches) {
                 // you're in PORTRAIT mode
                 orientation = 'portrait';
@@ -160,7 +176,7 @@
                     if(size.x < size.y){
                         wd = size.y;
                     }
-                    if(wd*(window.devicePixelRatio || 1) <= bp.width){
+                    if(wd <= bp.width){
                         breakpoint = bp;
                         break;
                     }
@@ -257,7 +273,7 @@
         }
 
         return {
-            version: '0.1.0',
+            version: '0.2.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
