@@ -27,7 +27,22 @@
             img.innerHTML = 'Een andere test'+item;
             img.setAttribute('data-src','images/image2.jpg');
             document.body.appendChild(img);
+
+            Rimg.execute(img);
             item++;
+        }
+
+        var adjustment = 0;
+        function adjust(){
+            var test = document.querySelector('img');
+            if(adjustment % 2){
+                test.setAttribute('data-src','images/image.jpg');
+            }else{
+                test.setAttribute('data-src','images/image2.jpg');
+            }
+
+            Rimg.execute(test);
+            adjustment++;
         }
     </script>
     <style type="text/css">
@@ -41,7 +56,7 @@
 </head>
 <body>
 <h1>Manual welcome</h1>
-<p>Just a test where you will need to manually define which images need to be responsive. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching.</p>
+<p>Just a test where you will need to manually define which images need to be responsive. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
 <img data-src="images/image.jpg" data-width="320" data-height="212" id="second"/>
 <!-- OPTIONAL: -->
 <noscript>

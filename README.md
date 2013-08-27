@@ -38,10 +38,11 @@ To see the examples in the `/test`-directory, go to your commandline:
 to see the examples.
 
 ## Dependencies
-* [Mediaqueries](http://caniuse.com/#feat=css-mediaqueries) support in the browser you want to support.
+* HTML5
+  * [Mediaqueries](http://caniuse.com/#feat=css-mediaqueries) support in the browser you want to support.
+  * Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but the viewport-meta-tag to let Rimg do the work.
 * A clear **filenaming strategy** that you will use with all your image-filenames you use.
 * Use **CSS** or ```style=""``` to adjust ```<img>``` dimensions and Rimg will only listen to that values.
-* Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but the viewport-meta-tag to let Rimg do the work.
 
 
 # Documentation
@@ -53,6 +54,7 @@ to see the examples.
 * only ```<img>``` elements with ```data-src``` property will be adjusted by Rimg, so implement on one, some or all images.
 * pure frontend (**javascript**) solution and no server-side setup/code is necessary.
 * **art direction support**, respect the chosen filenaming strategy and alter your ```<img>``` in any way (square?) and save the file (square?) used in that breakpoint and everything works!
+* independent library, it is **NO** plugin for jQuery, you don't need to load any other javascript library.
 
 ## API
 * **Rimg.execute(target)** (Element) - provide a DOM element to determine if it is or has ```<img>``` elements to change.

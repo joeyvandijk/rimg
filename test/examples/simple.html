@@ -19,6 +19,17 @@
                 document.body.appendChild(img);
                 item++;
             }
+
+            var adjustment = 0;
+            function adjust(){
+                var test = document.querySelector('img');
+                if(adjustment % 2){
+                    test.setAttribute('data-src','images/image.jpg');
+                }else{
+                    test.setAttribute('data-src','images/image2.jpg');
+                }
+                adjustment++;
+            }
         </script>
         <style type="text/css">
             img{
@@ -31,8 +42,8 @@
     </head>
     <body>
         <h1>Simple welcome</h1>
-        <p>Just a simple test with responsive images. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching.</p>
-        <img data-src="images/image.jpg" data-width="320" data-height="212" id="second"/>
+        <p>Just a simple test with responsive images. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
+        <img data-src="images/image.jpg"/>
         <!-- OPTIONAL: -->
         <noscript>
             <img src="images/image-small.jpg">

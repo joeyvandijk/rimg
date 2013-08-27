@@ -127,7 +127,7 @@
             if(bpts != null){
                 hidden.breakpoints = bpts;
             }
-            //TODO on window also?
+            //TODO put on window also?
             //clean reference
             RimgBreakpoint = undefined;
         }else{
@@ -151,15 +151,14 @@
 
         function adjust(value){
             //change src property when appropriate
-            //TODO check platform/mobile
-//            console.log('   Pixel: '+window.devicePixelRatio+'x');
             //TODO check connection speed - or not? > listener with ms of images (could be slow connection or large image)
             var orientation = 'landscape';
-            //TODO not needed? IE10 support only, different then with mediaqueries! > http://caniuse.com/matchmedia
+            //TODO temp, so delete
             if (window.matchMedia != null && window.matchMedia("(orientation: portrait)").matches) {
                 // you're in PORTRAIT mode
                 orientation = 'portrait';
             }
+console.log('orientation:',orientation);
             var ratio = window.devicePixelRatio || 1;
             var data = value.getAttribute('data-src');
             if(data != null){
@@ -233,6 +232,10 @@
             }
         }
 
+        function nodeInserted(e){
+            this.execute(e.target);
+        }
+
         function telemetry(value){
             //determine loading time of an image
             if(value.type === 'start'){
@@ -273,7 +276,7 @@
         }
 
         return {
-            version: '0.2.0',
+            version: '0.2.5',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -345,7 +348,9 @@
                         hidden.observer.observe(document.body, {
                             attributes: true,
                             childList: true,
-                            characterData: true
+                            characterData: true,
+                            subtree: true,
+                            attributeFilter: ['data-src']
                         });
                     }
 
@@ -359,6 +364,13 @@
             },
             disableIntrospection: function(){
                 hidden.disableIntrospection = true;
+
+                //remove mutation listeners
+                if(hidden.observer){
+                    hidden.observer.disconnect();
+                }else{
+                    event('remove','DOMNodeInserted',nodeInserted);
+                }
             },
             initialize: function(){
                 if(hidden.status != 'init'){
@@ -374,10 +386,10 @@
                 if (MutationObserver === undefined) {
                     event('add','DOMAttrModified',function(e){
                         //DOM attribute modified, not supported in webkit
+                        //TODO Safari 5.0+ MutationObserver support, Chrome 18
                     });
-                    event('add','DOMNodeInserted',function(e){
-                        base.execute(e.target);
-                    });
+                    //TODO issues with IE9 - http://help.dottoro.com/ljmcxjla.php
+                    event('add','DOMNodeInserted',nodeInserted.bind(base));
                     event('add','DOMSubtreeModified',function(e){
                         //TODO nothing?
                         //console.debug('Rimg:','DOM subtree modified',e.target);
@@ -387,6 +399,8 @@
                         mutations.forEach(function(mutation) {
                             if(mutation.addedNodes.length > 0){
                                 base.execute(mutation.addedNodes);
+                            }else if(mutation.attributeName === 'data-src'){
+                                base.execute(mutation.target);
                             }
                         });
                     });
