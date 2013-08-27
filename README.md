@@ -105,13 +105,10 @@ Please do test, check and come with pull requests/issues to further extend/stabi
 See the [Wiki](wiki/FAQ) for more information.
 
 # TODO
-- [ ] bandwidth detection solution (optional) 
-- [ ] srcset support (optional) 
-- [x] tests/examples for retina-support
-- [ ] namespace change (optional) 
-- [x] FAQ on the wiki explaining my choices
-- [ ] add to https://github.com/cdnjs/cdnjs
-- [x] last option - retina detection
-- [ ] use issues: remove initial remark or not?
-- [ ] data-src attribute changed (not-cross browser support?)
-- [ ] code refactoring (async? / optional)
+* bandwidth detection solution (optional) 
+* srcset support (optional) 
+* namespace change (optional) 
+* add to https://github.com/cdnjs/cdnjs
+* use issues: remove initial remark or not?
+* data-src attribute changed (not-cross browser support?)
+* code refactoring (async? / optional)
