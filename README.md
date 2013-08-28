@@ -17,9 +17,9 @@ or on a mobile
 ```html
 <img src="image-small.jpg" data-src="image.jpg"/>
 ```
-
-
-
+  
+  
+  
 # Getting Started
 1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-regular`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
 2. Define initial breakpoints, like 
@@ -52,8 +52,8 @@ Now you have a working setup that will check your DOM-element dimensions to dete
 * Use **CSS** or ```style=""``` to adjust ```<img>``` dimensions and Rimg will only listen to that values.
   
   
+  
 # Documentation
-
 ## Features
 * responsive images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
 * **reconfigure** after Rimg is loaded/executed by using ```Rimg.configure(breakpoints);``` 
@@ -99,6 +99,7 @@ The `w` in `480w` defines the width property to check. During development of res
 This is why I provide the option to use `480h` but I do **advise to use the width as a breakpoint** (kind of best practice).
   
   
+  
 # Examples
 See the ```/test``` directory for more information how to use this library.
 
@@ -110,8 +111,10 @@ To view the examples in the `/test`-directory, clone the project and go to your 
 to check the examples.
     
     
+    
 # Contributing
 Please do test, check and come with pull requests/issues to further extend/stabilize this library.
+  
   
   
 # Changelog
@@ -120,8 +123,10 @@ Please do test, check and come with pull requests/issues to further extend/stabi
 0.1.0 initial release
   
   
+  
 # FAQ
 See the [Wiki](wiki/FAQ) for more information.
+  
   
   
 # TODO
