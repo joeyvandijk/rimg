@@ -19,6 +19,7 @@ or on a mobile
 ```
 
 
+
 # Getting Started
 1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-regular`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
 2. Define initial breakpoints, like 
@@ -49,6 +50,9 @@ Now you have a working setup that will check your DOM-element dimensions to dete
   * Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but use the viewport-meta-tag to let Rimg do the work.
 * A clear **filenaming strategy** that you will use with all your image-filenames you use.
 * Use **CSS** or ```style=""``` to adjust ```<img>``` dimensions and Rimg will only listen to that values.
+
+
+---
 
 
 # Documentation
@@ -97,6 +101,10 @@ You may skip the retina option or skip certain breakpoints (`480w` or `768w`) or
 The `w` in `480w` defines the width property to check. During development of responsive websites I haven't found many examples to use `h` for the height, but I did found issues with javascript returning `0` as the height of non-loaded images. Even when the height is set in `%`.
 This is why I provide the option to use `480h` but I do **advise to use the width as a breakpoint** (kind of best practice).
 
+
+---
+
+
 # Examples
 See the ```/test``` directory for more information how to use this library.
 
@@ -108,8 +116,14 @@ To view the examples in the `/test`-directory, clone the project and go to your 
 to check the examples.
 
 
+---
+
+
 # Contributing
 Please do test, check and come with pull requests/issues to further extend/stabilize this library.
+
+
+---
 
 
 # Changelog
@@ -117,8 +131,16 @@ Please do test, check and come with pull requests/issues to further extend/stabi
 0.2.0 retina-fix + tests made  
 0.1.0 initial release
 
+
+---
+
+
 # FAQ
 See the [Wiki](wiki/FAQ) for more information.
+
+
+---
+
 
 # TODO
 * bandwidth detection solution (optional) 
