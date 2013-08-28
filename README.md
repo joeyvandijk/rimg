@@ -20,7 +20,7 @@ or on a mobile
 
 
 # Getting Started
-1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
+1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-regular`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
 2. Define initial breakpoints, like 
 ```javascript
 var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x,
@@ -29,7 +29,7 @@ var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -smal
 ``` 
 before you load the minified version of Rimg.
 
-3. Load the script, like ```<script src="https://raw.github.com/joeyvandijk/rimg/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tags.
+3. Load the script, like ```<script src="https://raw.github.com/joeyvandijk/rimg/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tag.
 
 will result in something like:
 
@@ -42,13 +42,6 @@ var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -smal
 ```
 
 Now you have a working setup that will check your DOM-element dimensions to determine which image-file suits best to show in your HTML page.
-
-To see the examples in the `/test`-directory, go to your commandline:
-* go the `/test`-directory
-* type `npm install` ([nodejs](http://nodejs.org) needed!)
-* type `node server.js` and go to `localhost:8080` 
-
-to see the examples.
 
 ## Dependencies
 * HTML5
@@ -106,6 +99,13 @@ This is why I provide the option to use `480h` but I do **advise to use the widt
 
 # Examples
 See the ```/test``` directory for more information how to use this library.
+
+To view the examples in the `/test`-directory, clone the project and go to your commandline:
+* go the `rimg/test`-directory
+* type `npm install` ([nodejs](http://nodejs.org) needed!)
+* type `node server.js` and go to `localhost:8080` 
+
+to check the examples.
 
 
 # Contributing
