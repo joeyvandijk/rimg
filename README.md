@@ -23,7 +23,7 @@ will result in something like:
 ```html
 <script>
 var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
-<script async src="//cdnjs.com/rimg"></script>
+<script async src="https://raw.github.com/joeyvandijk/rimg/rimg.min.js"></script>
 ...
 <img data-src="image.jpg"/>
 ```
@@ -40,7 +40,7 @@ to see the examples.
 ## Dependencies
 * HTML5
   * [Mediaqueries](http://caniuse.com/#feat=css-mediaqueries) support in the browser you want to support.
-  * Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but the viewport-meta-tag to let Rimg do the work.
+  * Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but use the viewport-meta-tag to let Rimg do the work.
 * A clear **filenaming strategy** that you will use with all your image-filenames you use.
 * Use **CSS** or ```style=""``` to adjust ```<img>``` dimensions and Rimg will only listen to that values.
 
@@ -100,6 +100,7 @@ Please do test, check and come with pull requests/issues to further extend/stabi
 
 
 # Changelog
+0.2.5 mutations fix  
 0.2.0 retina-fix + tests made  
 0.1.0 initial release
 
@@ -114,3 +115,4 @@ See the [Wiki](wiki/FAQ) for more information.
 * use issues: remove initial remark or not?
 * data-src attribute changed (not-cross browser support?)
 * code refactoring (async? / optional)
+* object way of initializing (disable/etc) (optional)
