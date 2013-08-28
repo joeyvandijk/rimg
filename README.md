@@ -1,10 +1,23 @@
-RIMG
-====
+#RIMG
 
-This library supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition).
+"Responsive-image" (RIMG) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition).
 
 It is based on the idea that when the DOM is loaded, it will traverse the DOM, looking for ```<img>```-nodes, and alter the ```src```-property. You can also manually execute this task, see the documentation.
 Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoint-images. Just provide the image-basename and let Rimg do the adjustments.
+
+An example:
+```html
+<img data-src="image.jpg"/>
+```
+will (by using Rimg) result in  
+```html
+<img src="image-large.jpg" data-src="image.jpg"/>
+```
+or on a mobile
+```html
+<img src="image-small.jpg" data-src="image.jpg"/>
+```
+
 
 # Getting Started
 1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
@@ -116,3 +129,4 @@ See the [Wiki](wiki/FAQ) for more information.
 * data-src attribute changed (not-cross browser support?)
 * code refactoring (async? / optional)
 * object way of initializing (disable/etc) (optional)
+* create website with real-time demo
