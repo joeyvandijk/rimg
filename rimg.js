@@ -152,13 +152,6 @@
         function adjust(value){
             //change src property when appropriate
             //TODO check connection speed - or not? > listener with ms of images (could be slow connection or large image)
-            var orientation = 'landscape';
-            //TODO temp, so delete
-            if (window.matchMedia != null && window.matchMedia("(orientation: portrait)").matches) {
-                // you're in PORTRAIT mode
-                orientation = 'portrait';
-            }
-console.log('orientation:',orientation);
             var ratio = window.devicePixelRatio || 1;
             var data = value.getAttribute('data-src');
             if(data != null){
