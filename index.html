@@ -4,12 +4,13 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script>var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
+    <script src="rimg.min.js"></script>
     <title>Rimg by joeyvandijk</title>
   </head>
 
@@ -31,46 +32,33 @@
         <hr>
 
         <section id="main_content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+            <h3>Example</h3>
+            <p>"Responsive-image" (RIMG) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition). The source of this page shows how the image is being changed by pure Javascript.</p>
+            <img data-src="images/image.jpg"/>
+            <p></p>
+            <h3>More information</h3>
+            <ul>
+                <li><a name="gettingstarted" class="anchor" href="https://github.com/joeyvandijk/rimg#getting-started">Getting started</a><span> - how to implement on your website</span></li>
+                <li><a name="api" class="anchor" href="https://github.com/joeyvandijk/rimg#api">API</a><span> - how to use the library</span></li>
+                <li><a name="breakpoints" class="anchor" href="https://github.com/joeyvandijk/rimg#breakpoints">Breakpoints</a><span> - more information about the difference with the srcset specification</span></li>
+                <li><a name="examples" class="anchor" href="https://github.com/joeyvandijk/rimg#examples">Examples</a><span> - all the options can be tested locally or seen for more code input</span></li>
+                <li><a name="changelog" class="anchor" href="https://github.com/joeyvandijk/rimg#changelog">Changelog</a><span> - all versions</span></li>
+                <li><a name="faq" class="anchor" href="https://github.com/joeyvandijk/rimg/wiki/faq">FAQ</a><span> - some questions answered, if you miss an answer let <a href="mailto:contact@joeyvandijk.nl">me</a> know.</span></li>
+            </ul>
         </section>
 
-        <footer>
-          Rimg is maintained by <a href="https://github.com/joeyvandijk">joeyvandijk</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+        <footer>Rimg is maintained by <a href="https://github.com/joeyvandijk">joeyvandijk</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</footer>
 
-        
       </div>
     </div>
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-27722210-3', 'joeyvandijk.github.io');
+      ga('send', 'pageview');
+  </script>
   </body>
 </html>
