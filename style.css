@@ -98,6 +98,11 @@ header h2 {
     width: 100%;
     max-width: 100%;
 }
+#container .inner article img {
+    width: 49%;
+    max-width: 49%;
+    padding-right: 10px;
+}
 
 #downloads {
     margin-bottom: 40px;

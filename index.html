@@ -18,7 +18,6 @@
   <body>
     <div id="container">
       <div class="inner">
-
         <header>
           <h1>Rimg</h1>
           <h2>A responsive image solution for browsers that support mediaqueries. Pure javascript and no server-side code.</h2>
@@ -45,8 +44,28 @@
                 <li><a name="dependencies" class="anchor" href="https://github.com/joeyvandijk/rimg#dependencies">Dependencies</a><span> - HTML5 / CSS and a clear filenaming strategy</span></li>
                 <li><a name="examples" class="anchor" href="https://github.com/joeyvandijk/rimg#examples">Examples</a><span> - all the options can be tested locally or seen for more code input</span></li>
                 <li><a name="changelog" class="anchor" href="https://github.com/joeyvandijk/rimg#changelog">Changelog</a><span> - all versions</span></li>
-                <li><a name="faq" class="anchor" href="https://github.com/joeyvandijk/rimg/wiki/faq">FAQ</a><span> - some questions answered, if you miss an answer let <a href="mailto:contact@joeyvandijk.nl">me</a> know.</span></li>
+                <li><a name="faq" class="anchor" href="https://github.com/joeyvandijk/rimg/wiki/faq">FAQ</a><span> - some questions answered, if you miss an answer let <a href="mailto:contact@joeyvandijk.nl">me</a> know.</span></li>                
             </ul>
+            <script>
+	            function addImage(){
+	            	// #container .inner article img
+	            	var holder;
+	            	if(document.querySelector){
+	            		holder = document.querySelector('#container .inner article');
+	            	}else{
+	            		holder = document.getElementById('#container .inner article');
+	            	}
+	            	console.log('holder:',holder);
+	            	var img = document.createElement('img');
+	            	img.setAttribute('data-src','images/image.jpg');
+	            	holder.appendChild(img);
+	            }
+            </script>
+            <h3>An interactive example</h3>
+            <p>Not only on initial load or resizes will RIMG update your images, but also when they are added through code (DOM-append). For example click <a href="javascript:addImage();">here</a> to add images below through Javascript.</p>
+            <article>
+            	<img data-src="images/image.jpg"/>
+            </article>            
         </section>
 
         <footer>Rimg is maintained by <a href="https://github.com/joeyvandijk">joeyvandijk</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</footer>
