@@ -1,6 +1,13 @@
 'use strict';
 
 !function(){
+    if(!console){
+        console = {
+            log: function(){},
+            error: function(){}
+        }
+    }
+
     var Rimg = function() {
         var hidden = {
             status : 'init',
@@ -159,6 +166,17 @@
                 var file = data.substr(0,data.lastIndexOf('.'));
                 var extension = data.substr(data.lastIndexOf('.'));
                 var size = {x:value.width,y:value.height};
+                //firefox presents width/height with 0, so check getComputedStyle if necessary:
+                if(value.width == 0){
+                    size.x = window.getComputedStyle(value,null).maxWidth;
+                    size.x = size.x.replace('px','');
+                    size.x = Number(size.x);
+                }
+                if(value.height == 0){
+                    size.y = window.getComputedStyle(value,null).maxHeight;
+                    size.y = size.y.replace('px','');
+                    size.y = Number(size.y);
+                }
                 var i = 0;
                 var il = hidden.breakpoints.length;
                 var breakpoint;
@@ -294,7 +312,7 @@
                         //child reference (after add)
                         inspect(target[0]);
                     }else{
-                        console.error('Rimg.execute(): no <img> element found');
+                        //no <img> element found
                     }
                 }
             },
@@ -335,6 +353,7 @@
                 if(!hidden.disableIntrospection){
                     // DOM content loaded
                     if (hidden.observer === null) {
+                        //TODO double? see some lines below
                         //check the whole page before any changes happen
                         this.execute(e.target);
                     }else{
