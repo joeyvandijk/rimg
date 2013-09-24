@@ -287,7 +287,7 @@
         }
 
         return {
-            version: '0.2.5',
+            version: '0.3.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){

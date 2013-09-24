@@ -2,30 +2,17 @@
 
 "Responsive-image" (RIMG) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition).
 
-It is based on the idea that when the DOM is loaded, it will traverse the DOM, looking for ```<img>```-nodes, and alter the ```src```-property. You can also manually execute this task, see the documentation.
-Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoint-images. Just provide the image-basename and let Rimg do the adjustments.
-
-An example:
-```html
-<img data-src="image.jpg"/>
-```
-will (by using Rimg) result in  
-```html
-<img src="image-large.jpg" data-src="image.jpg"/>
-```
-or on a mobile
-```html
-<img src="image-small.jpg" data-src="image.jpg"/>
-```
+It is based on the idea that when the DOM is loaded, it will traverse the DOM, looking for ```<img>```-nodes, and alter the ```src```-property. You can also [manually](https://github.com/joeyvandijk/rimg/tree/master#api) execute this task.  
+Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoints. Just provide the image basename and let Rimg do the adjustments.
   
-  
+See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg/tree/master#breakpoints) how the breakpoints are used.
   
 # Getting Started
 1. Define custom filenaming strategy, like `-tiny`, `-small`, `-medium`, `-regular`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
 2. Define initial breakpoints, like 
 ```javascript
 var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x,
--medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, 
+-medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, 
 -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';
 ``` 
 before you load the minified version of Rimg.
@@ -36,9 +23,10 @@ will result in something like:
 
 ```html
 <script>
-var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
+var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
 <script src="js/rimg.min.js"></script>
-...
+</head>
+<body>
 <img data-src="image.jpg"/>
 ```
 
@@ -59,7 +47,7 @@ Now you have a working setup that will check your DOM-element dimensions to dete
 * **reconfigure** after Rimg is loaded/executed by using ```Rimg.configure(breakpoints);``` 
 * **disable** auto introspection, so only **manually** adjustable by using ```Rimg.configure(breakpoints);``` and ```Rimg.execute(targetElement);```
 * only ```<img>``` elements with ```data-src``` property will be adjusted by Rimg, so implement on one, some or all images.
-* pure frontend (**javascript**) solution and no server-side setup/code is necessary.
+* pure frontend ( **javascript** ) solution and no server-side setup/code is necessary.
 * **art direction support**, respect the chosen filenaming strategy and alter your ```<img>``` in any way (square?) and save the file (square?) used in that breakpoint and everything works!
 * independent library, it is **NO** plugin for jQuery, you don't need to load any other javascript library.
 
@@ -71,7 +59,7 @@ Now you have a working setup that will check your DOM-element dimensions to dete
 
 ```javascript
 var RimgBreakpoint = '-small 480w 1x, -small-retina 480w 2x, -regular 768w 1x, 
--regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';
+-regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';
 ``` 
 
 ## Breakpoints
@@ -87,37 +75,37 @@ will become
 <img src="image-small.jpg" data-src="image.jpg"/>
 ```
 
-in the situation it uses the `-small 480w 1x` breakpoint you defined for example. `image.jpg` is non-existent but the base filename to use with all images.
+in the situation where the `-small 480w 1x` breakpoint is valid. `image.jpg` is non-existent, but it is the base filename to use with all images.
 
-The used ```var RimgBreakpoint = '-small 480w 1x, -small-retina 480w 2x, -regular 768w 1x, -regular 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';``` gives you all the freedom by defining 1 (or more) breakpoints with the flexibility to add specific image-files for retina-screens like the iPad, iPhone or Samsung Galaxy Sxxx, etc. 
+```var RimgBreakpoint = '-small 480w 1x, -small-retina 480w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x';```   
+gives you all the freedom by defining 1 (or more) breakpoints with the flexibility to add specific image-files for retina-screens like the iPad, iPhone or Samsung Galaxy S.., etc.  
+While the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification only references `2x` as maximum pixel aspect ratio, this is not current. Because devices already exist with `devicePixelRatio` as high as `3x` or even higher (with 1080p screen).
 
-While the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification only references `2x` as maximum pixel aspect ratio, this is not current (`3x`, `4x` already available) so you may add special images for devices with `3x` as `devicePixelRatio`.
+You can skip the retina option or skip certain breakpoints (`480w` or `768w`) or even add weird ones (like ```-special 456w 1x```).
 
-You may skip the retina option or skip certain breakpoints (`480w` or `768w`) or even add weird ones (like ```-special 456w 1x```).
-
-The `w` in `480w` defines the width property to check. During development of responsive websites I haven't found many examples to use `h` for the height, but I did found issues with javascript returning `0` as the height of non-loaded images. Even when the height is set in `%`.
+The `w` in `480w` defines the width property to check. During development of responsive websites I haven't found many examples to use `h` for the height, but I did found issues with javascript returning `0` as the height of non-loaded images; even when the height is set in `%`.
 This is why I provide the option to use `480h` but I do **advise to use the width as a breakpoint** (kind of best practice).
   
   
   
 # Examples
-See the ```/test``` directory for more information how to use this library.
-
+See the ```/test``` directory for more information how to use this library.  
 To view the examples in the `/test`-directory, clone the project and go to your commandline:
 * go the `rimg/test`-directory
 * type `npm install` ([nodejs](http://nodejs.org) needed!)
 * type `node server.js` and go to `localhost:8080` 
 
-to check the examples.
+to check the examples locally or see the [demo](http://joeyvandijk.github.io/rimg) online.
     
     
     
 # Contributing
-Please do test, check and come with pull requests/issues to further extend/stabilize this library.
+Please do test, check and come with pull requests/issues/remarks to further extend/stabilize this library.
   
   
   
 # Changelog
+0.3.0 firefox bug (width=0) fixed  
 0.2.5 mutations fix  
 0.2.0 retina-fix + tests made  
 0.1.0 initial release
@@ -131,11 +119,8 @@ See the [Wiki](wiki/FAQ) for more information.
   
 # TODO
 * bandwidth detection solution (optional) 
-* srcset support (optional) 
 * namespace change (optional) 
 * add to https://github.com/cdnjs/cdnjs
-* use issues: remove initial remark or not?
 * data-src attribute changed (not-cross browser support?)
 * code refactoring (async? / optional)
 * object way of initializing (disable/etc) (optional)
-* create website with real-time demo
