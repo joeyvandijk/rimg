@@ -158,7 +158,6 @@
 
         function adjust(value){
             //change src property when appropriate
-            //TODO check connection speed - or not? > listener with ms of images (could be slow connection or large image)
             var ratio = window.devicePixelRatio || 1;
             var data = value.getAttribute('data-src');
             if(data != null){
@@ -197,20 +196,9 @@
                     breakpoint = hidden.breakpoints[hidden.breakpoints.length-1];
                 }
 
-                //TODO check correct width and which breakpoint matches or not?
-                //TODO parentElement
-    //                console.log('   ',window.getComputedStyle(value).height);
-    //                console.log('   ',data,value,value.offsetWidth,'x',value.offsetHeight,' or ',value.scrollWidth,'x',value.scrollHeight,value.clientWidth,'x',value.clientHeight,value.innerWidth,'x',value.innerHeight,value.outerWidth,'x',value.outerHeight,'##',value.width,'x',value.height);
-    //                console.log('   ',data,value.parentElement,value.parentElement.offsetWidth,'x',value.parentElement.offsetHeight,' or ',value.parentElement.scrollWidth,'x',value.parentElement.scrollHeight,value.parentElement.clientWidth,'x',value.parentElement.clientHeight,value.parentElement.innerWidth,'x',value.parentElement.innerHeight,value.parentElement.outerWidth,'x',value.parentElement.outerHeight,'##',value.parentElement.width,'x',value.parentElement.height);
-                var id = telemetryData.identifier;
                 if(value.getAttribute('src') != file+breakpoint.getSrc(ratio)+extension){
                     //set the appropriate version of the image
-                    telemetry({type:'start',image:data+id,time:new Date().getTime()});
                     value.setAttribute('src',file+breakpoint.getSrc(ratio)+extension);
-                    value.setAttribute('data-telemetry',data+id);
-                    event('add','load',telemetryData.done,value);
-                    event('add','error',telemetryData.error,value);
-                    telemetryData.identifier++;
                 }
             }
         }
@@ -247,47 +235,8 @@
             this.execute(e.target);
         }
 
-        function telemetry(value){
-            //determine loading time of an image
-            if(value.type === 'start'){
-                telemetryData.connections[value.image] = value.time;
-            }else if(value.type === 'end'){
-                if(value.time != null){
-                    var diff = Number(value.time) - Number(telemetryData.connections[value.image]);
-                    telemetryData.values.push(diff);
-                    if(telemetryData.length > 50){
-                        telemetryData.shift();
-                    }
-                }
-                delete telemetryData.connections[value.image];
-            }else if(value.type === 'debug'){
-                if(telemetryData.values.length > 0){
-                    console.debug('Rimg:','show all telemetry data (in ms):',telemetryData.values,'connections:',telemetryData.connections);
-                }
-            }
-        }
-
-        //store loading times for bandwidth purposes
-        var telemetryData = {
-            identifier:0,
-            values:[],//in ms!
-            connections:{},
-            done: function(e){
-                telemetry({type:'end',image:e.target.getAttribute('data-telemetry'),time:new Date().getTime()});
-                //cleanup listeners
-                event('remove','load',telemetryData.done,e.target);
-                event('remove','error',telemetryData.done,e.target);
-            },
-            error: function(e){
-                telemetry({type:'end',image:e.target.getAttribute('data-telemetry'),time:null});
-                //cleanup listeners
-                event('remove','load',telemetryData.done,e.target);
-                event('remove','error',telemetryData.done,e.target);
-            }
-        }
-
         return {
-            version: '0.3.0',
+            version: '0.3.5',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -353,7 +302,6 @@
                 if(!hidden.disableIntrospection){
                     // DOM content loaded
                     if (hidden.observer === null) {
-                        //TODO double? see some lines below
                         //check the whole page before any changes happen
                         this.execute(e.target);
                     }else{
@@ -364,13 +312,12 @@
                             subtree: true,
                             attributeFilter: ['data-src']
                         });
+                        //check full DOM
+                        this.execute(document);
                     }
 
                     //listen for browser resize
                     event('add','resize',this.resized.bind(this));
-
-                    //check full DOM
-                    this.execute(document);
                 }
                 hidden.status = 'ready';
             },

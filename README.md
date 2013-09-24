@@ -105,6 +105,7 @@ Please do test, check and come with pull requests/issues/remarks to further exte
   
   
 # Changelog
+0.3.5 moved bandwidth detection into a separate branch  
 0.3.0 firefox bug (width=0) fixed  
 0.2.5 mutations fix  
 0.2.0 retina-fix + tests made  
@@ -123,4 +124,5 @@ See the [Wiki](wiki/FAQ) for more information.
 * add to https://github.com/cdnjs/cdnjs
 * data-src attribute changed (not-cross browser support?)
 * code refactoring (async? / optional)
-* object way of initializing (disable/etc) (optional)
+* object way of initializing (disable/etc) (optional)  
+* casperjs - automated tests
