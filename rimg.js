@@ -236,7 +236,7 @@
         }
 
         return {
-            version: '0.3.5',
+            version: '0.4.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -249,7 +249,20 @@
                 if(target.nodeName === '#document'){
                     if(target.childNodes.length > 1){
                         //use html node
-                        inspect(target.childNodes[1].children[1]);
+                        if(target.childNodes[1].nodeName != 'HTML'){
+                            //needed to skip HTML comments which are detected as nodes
+                            var i = 0;
+                            var il = target.childNodes.length;
+                            while(i<il){
+                                if(target.childNodes[i].nodeName === 'HTML'){
+                                    inspect(target.childNodes[i].children[1]);
+                                    break;
+                                }
+                                i++;
+                            }
+                        }else{
+                            inspect(target.childNodes[1].children[1]);
+                        }
                     }else{
                         console.error('Rimg.execute(): not a valid DOM representation, check your code.');
                     }
