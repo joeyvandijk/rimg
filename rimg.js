@@ -236,7 +236,7 @@
         }
 
         return {
-            version: '0.4.0',
+            version: '0.4.1',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -248,20 +248,37 @@
                 }
                 if(target.nodeName === '#document'){
                     if(target.childNodes.length > 1){
-                        //use html node
+                        //find html node
+                        var html;
                         if(target.childNodes[1].nodeName != 'HTML'){
                             //needed to skip HTML comments which are detected as nodes
                             var i = 0;
                             var il = target.childNodes.length;
                             while(i<il){
                                 if(target.childNodes[i].nodeName === 'HTML'){
-                                    inspect(target.childNodes[i].children[1]);
+                                    html = target.childNodes[i];
                                     break;
                                 }
                                 i++;
                             }
                         }else{
-                            inspect(target.childNodes[1].children[1]);
+                            //second option is <html>
+                            html = target.childNodes[1];
+                        }
+                        //find body node
+                        if(html.childNodes[1].nodeName != 'BODY'){
+                            var i = 0;
+                            var il = html.childNodes.length;
+                            while(i<il){
+                                if(html.childNodes[i].nodeName === 'BODY'){
+                                    inspect(html.childNodes[i]);
+                                    break;
+                                }
+                                i++;
+                            }
+                        }else{
+                            //second option is <body>
+                            inspect(html.childNodes[1]);
                         }
                     }else{
                         console.error('Rimg.execute(): not a valid DOM representation, check your code.');
