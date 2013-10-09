@@ -105,6 +105,7 @@ Please do test, check and come with pull requests/issues/remarks to further exte
   
   
 # Changelog
+0.4.1 fixed issue with body element not always as 2nd option  
 0.4.0 fixed issue with html comments blocking its execution  
 0.3.5 moved bandwidth detection into a separate branch  
 0.3.0 firefox bug (width=0) fixed  
