@@ -15,14 +15,14 @@ var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -smal
 ``` 
 before you load the minified version of Rimg.
 
-3. Load the script, like ```<script src="js/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tag.
+3. Load the script, like ```<script src="//cdnjs.cloudflare.com/ajax/libs/rimg/0.4.1/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tag.
 
 will result in something like:
 
 ```html
 <script>
 var RimgBreakpoint = '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x';</script>
-<script src="js/rimg.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/rimg/0.4.1/rimg.min.js"></script>
 </head>
 <body>
 <img data-src="image.jpg"/>
@@ -121,7 +121,6 @@ See the [Wiki](wiki/FAQ) for more information.
 # TODO
 * bandwidth detection solution (optional) 
 * namespace change (optional) 
-* add to https://github.com/cdnjs/cdnjs
 * data-src attribute changed (not-cross browser support?)
 * code refactoring (async? / optional)
 * object way of initializing (disable/etc) (optional)  
