@@ -59,7 +59,7 @@
                                 var sl = this.pixelRatio.length;
                                 while(s<sl){
                                     //possible that pixelRatio is 1.5 or 2.25
-                                    if(value == this.pixelRatio[s] || Math.round(value) == this.pixelRatio[s]){
+                                    if(value === this.pixelRatio[s] || Math.round(value) === this.pixelRatio[s]){
                                         return this.src[s];
                                     }
                                     s++;
@@ -77,11 +77,11 @@
                         if(part.replace(' ','') === ''){
                             //ignore, empty = typo
                         }else{
-                            if(part.match(/^[0-9]{0,4}w/gi) != null){
+                            if(part.match(/^[0-9]{0,4}w/gi) !== null){
                                 bpDefinition.width = Number(part.substr(0,part.length-1));
-                            }else if(part.match(/^[0-9]{0,4}h/gi) != null){
+                            }else if(part.match(/^[0-9]{0,4}h/gi) !== null){
                                 bpDefinition.height = Number(part.substr(0,part.length-1));
-                            }else if(part.match(/[0-9]{1}x/gi) != null){
+                            }else if(part.match(/[0-9]{1}x/gi) !== null){
                                 bpDefinition.pixelRatio.push(Number(part.substr(0,part.length-1)));
                             }else{
                                 bpDefinition.src.push(part);
@@ -96,7 +96,7 @@
                     var found = false;
                     while(d<dl){
                         var def = definition[d];
-                        if((def.width === bpDefinition.width  && def.width != -1) || (def.height === bpDefinition.height && def.height != -1)){
+                        if((def.width === bpDefinition.width  && def.width !== -1) || (def.height === bpDefinition.height && def.height !== -1)){
                             //a match
                             def.pixelRatio.push(bpDefinition.pixelRatio[0]);
                             def.src.push(bpDefinition.src[0]);
@@ -131,7 +131,7 @@
         if(typeof RimgBreakpoint !== 'undefined'){
             //validate
             var bpts = parseBreakpoints(RimgBreakpoint);
-            if(bpts != null){
+            if(bpts !== null){
                 hidden.breakpoints = bpts;
             }
             //TODO put on window also?
@@ -149,7 +149,7 @@
             if(evt === 'resize'){
                 target = window;
             }
-            if(type == 'add'){
+            if(type === 'add'){
                 target.addEventListener(evt,func,false);
             }else{
                 target.removeEventListener(evt,func,false);
@@ -160,18 +160,18 @@
             //change src property when appropriate
             var ratio = window.devicePixelRatio || 1;
             var data = value.getAttribute('data-src');
-            if(data != null){
+            if(data !== null){
                 //only adjust images with data-src property
                 var file = data.substr(0,data.lastIndexOf('.'));
                 var extension = data.substr(data.lastIndexOf('.'));
                 var size = {x:value.width,y:value.height};
                 //firefox presents width/height with 0, so check getComputedStyle if necessary:
-                if(value.width == 0){
+                if(value.width === 0){
                     size.x = window.getComputedStyle(value,null).maxWidth;
                     size.x = size.x.replace('px','');
                     size.x = Number(size.x);
                 }
-                if(value.height == 0){
+                if(value.height === 0){
                     size.y = window.getComputedStyle(value,null).maxHeight;
                     size.y = size.y.replace('px','');
                     size.y = Number(size.y);
@@ -196,7 +196,7 @@
                     breakpoint = hidden.breakpoints[hidden.breakpoints.length-1];
                 }
 
-                if(value.getAttribute('src') != file+breakpoint.getSrc(ratio)+extension){
+                if(value.getAttribute('src') !== file+breakpoint.getSrc(ratio)+extension){
                     //set the appropriate version of the image
                     value.setAttribute('src',file+breakpoint.getSrc(ratio)+extension);
                 }
@@ -250,7 +250,7 @@
                     if(target.childNodes.length > 1){
                         //find html node
                         var html;
-                        if(target.childNodes[1].nodeName != 'HTML'){
+                        if(target.childNodes[1].nodeName !== 'HTML'){
                             //needed to skip HTML comments which are detected as nodes
                             var i = 0;
                             var il = target.childNodes.length;
@@ -266,7 +266,7 @@
                             html = target.childNodes[1];
                         }
                         //find body node
-                        if(html.childNodes[1].nodeName != 'BODY'){
+                        if(html.childNodes[1].nodeName !== 'BODY'){
                             var i = 0;
                             var il = html.childNodes.length;
                             while(i<il){
@@ -284,7 +284,7 @@
                         console.error('Rimg.execute(): not a valid DOM representation, check your code.');
                     }
                 }else{
-                    if(target != undefined && target.nodeName != undefined && target.nodeName.toLowerCase() === 'img'){
+                    if(target !== undefined && target.nodeName != undefined && target.nodeName.toLowerCase() === 'img'){
                         //direct reference
                         inspect(target);
                     }else if(target[0] != undefined && target[0].nodeName.toLowerCase() === 'img'){
@@ -297,7 +297,7 @@
             },
             configure: function(value){
                 var breakpoints = parseBreakpoints(value);
-                if(breakpoints != null){
+                if(breakpoints !== null){
                     hidden.breakpoints = breakpoints;
                 }
 
@@ -307,20 +307,20 @@
                 }
             },
             resized: function(e){
-                if(hidden.status != 'ready'){
+                if(hidden.status !== 'ready'){
                     //not available anymore
                     return;
                 }
 
                 //cleanup
-                if(hidden.resizeWait != null){
+                if(hidden.resizeWait !== null){
                     clearInterval(hidden.resizeWait);
                 }
                 //wait 100ms to ensure performant and not a blocking script execution
                 hidden.resizeWait = setInterval(resize.bind(this),100);
             },
             loaded: function(e){
-                if(hidden.status != 'progress'){
+                if(hidden.status !== 'progress'){
                     //not available anymore
                     return;
                 }
@@ -362,8 +362,8 @@
                 }
             },
             initialize: function(){
-                if(hidden.status != 'init'){
-                    if(hidden.status != 'error'){
+                if(hidden.status !== 'init'){
+                    if(hidden.status !== 'error'){
                         console.error('Rimg.initialize(): Already initialized. No forced initialization supported, check your code.');
                     }
                     return;
