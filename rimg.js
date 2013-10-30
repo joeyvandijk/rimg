@@ -284,10 +284,10 @@
                         console.error('Rimg.execute(): not a valid DOM representation, check your code.');
                     }
                 }else{
-                    if(target !== undefined && target.nodeName != undefined && target.nodeName.toLowerCase() === 'img'){
+                    if(target !== undefined && target.nodeName !== undefined && target.nodeName.toLowerCase() === 'img'){
                         //direct reference
                         inspect(target);
-                    }else if(target[0] != undefined && target[0].nodeName.toLowerCase() === 'img'){
+                    }else if(target[0] !== undefined && target[0].nodeName.toLowerCase() === 'img'){
                         //child reference (after add)
                         inspect(target[0]);
                     }else{
