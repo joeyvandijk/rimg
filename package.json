@@ -1,6 +1,6 @@
 {
-    "name": "responsive-images",
-    "version": "0.0.1",
+    "name": "rimg",
+    "version": "0.9.0",
     "description": "ERROR: No README.md file found!",
     "main": "index.js",
     "scripts": {

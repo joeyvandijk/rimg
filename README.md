@@ -103,6 +103,7 @@ Please do test, check and come with pull requests/issues/remarks to further exte
   
   
 # Changelog
+0.9.0 version bump + fixed visual performance (less latency) + cleaned error when no breakpoint defined  
 0.4.1 fixed issue with body element not always as 2nd option  
 0.4.0 fixed issue with html comments blocking its execution  
 0.3.5 moved bandwidth detection into a separate branch  

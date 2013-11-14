@@ -128,17 +128,20 @@
         }
 
         //discover initial settings
-        if(typeof RimgBreakpoint !== 'undefined'){
+        if(typeof window.RimgBreakpoint !== 'undefined'){
             //validate
             var bpts = parseBreakpoints(RimgBreakpoint);
             if(bpts !== null){
                 hidden.breakpoints = bpts;
             }
-            //TODO put on window also?
             //clean reference
-            RimgBreakpoint = undefined;
+            window.RimgBreakpoint = undefined;
         }else{
             console.log('(remark) Rimg: no breakpoints defined, check the documentation.');
+            return {
+                version: '0.4.1',
+                initialize: function(){}
+            }
         }
 
         function event(type,evt,func,target){
@@ -229,6 +232,9 @@
                 hidden.resizeDimensions = nw;
                 this.execute(document);
             }
+
+            //outside to ensure correct timing difference
+            hidden.time = new Date().getTime();
         }
 
         function nodeInserted(e){
@@ -236,7 +242,7 @@
         }
 
         return {
-            version: '0.4.1',
+            version: '0.9.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -316,8 +322,13 @@
                 if(hidden.resizeWait !== null){
                     clearInterval(hidden.resizeWait);
                 }
-                //wait 100ms to ensure performant and not a blocking script execution
-                hidden.resizeWait = setInterval(resize.bind(this),100);
+
+                if(hidden.time === undefined || new Date().getTime() - hidden.time > 1000){
+                    resize.bind(this)();
+                }else{
+                    //wait 100ms to ensure performant and not a blocking script execution
+                    hidden.resizeWait = setInterval(resize.bind(this),100);
+                }
             },
             loaded: function(e){
                 if(hidden.status !== 'progress'){
