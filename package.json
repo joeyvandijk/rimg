@@ -16,7 +16,7 @@
         "grunt-notify":"0.2.x"
     },
     "devDependencies":{
-        "grunt":"~0.4.1",
+        "grunt":"~0.4.2",
         "grunt-contrib-jshint":"~0.4.3",
         "grunt-contrib-nodeunit":"~0.1.2"
     },

@@ -4,6 +4,8 @@
 
 'use strict';
 
+
+
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
@@ -28,7 +30,8 @@ module.exports = function(grunt) {
             target:{
             	files: {
                 	'temp/rimg-uglify.js' : ['rimg.js'],
-                	'rimg.min.js' : ['rimg.js']
+                	'rimg.min.js' : ['rimg.js'],
+                	'test/examples/rimg.min.js' : ['rimg.js']
             	}
             }            
         },
@@ -48,11 +51,6 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        copy:{
-            target:{
-                files:[{flatten: true,src: ['rimg.min.js'],dest: 'test/examples/rimg.min.js'}]
-            }
-        },
         notify:{
             options:{
                 title:'Build completed',
@@ -65,11 +63,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-notify');
 
     // Whenever the "test" task is run, first clean the "tmp" dir, then run this
     // plugin's task(s), then test the result.
-    grunt.registerTask('build', ['uglify','compress','clean','copy','notify']);
+    grunt.registerTask('build', ['uglify','compress','clean','notify']);
 }

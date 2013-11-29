@@ -2,11 +2,51 @@
 
 !function(){
     if(!console){
+        alert('console not found')
         console = {
             log: function(){},
             error: function(){}
         }
     }
+
+    ////////// IE8 /////////////
+    if (!Object.create) {
+        Object.create = (function(){
+            function F(){}
+
+            return function(o){
+                if (arguments.length != 1) {
+                    throw new Error('Object.create implementation only accepts one parameter.');
+                }
+                F.prototype = o;
+                return new F();
+            }
+        })()
+    }
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+            if (typeof this !== "function") {
+                // closest thing possible to the ECMAScript 5 internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
+
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP = function () {},
+                fBound = function () {
+                    return fToBind.apply(this instanceof fNOP && oThis
+                        ? this
+                        : oThis,
+                        aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
+
+            return fBound;
+        };
+    }
+    ////////// END IE8 /////////////
 
     var Rimg = function() {
         var hidden = {
@@ -15,8 +55,14 @@
             breakpoints : [],
             resizeWait: null,
             resizeDimensions: '',
-            disableIntrospection: false
+            disableIntrospection: false,
+            isIE8: false
         };
+
+        if(window.addEventListener === undefined){
+            alert('is IE8')
+            hidden.isIE8 = true;
+        }
 
         function parseBreakpoints(value){
             //custom: (once) -small 640w 1x, -retina-small 640w 2x, -medium 1280w 1x, -retina-medium 1280w 2x
@@ -137,11 +183,7 @@
             //clean reference
             window.RimgBreakpoint = undefined;
         }else{
-            console.log('(remark) Rimg: no breakpoints defined, check the documentation.');
-            return {
-                version: '0.4.1',
-                initialize: function(){}
-            }
+            console.log('(remark) Rimg: no breakpoints defined (yet), check the documentation.');
         }
 
         function event(type,evt,func,target){
@@ -152,10 +194,25 @@
             if(evt === 'resize'){
                 target = window;
             }
-            if(type === 'add'){
-                target.addEventListener(evt,func,false);
+            if(hidden.isIE8){
+                //switch events to add correct responsive support
+                if(evt === 'DOMContentLoaded'){
+                    evt = 'onreadystatechange';
+                }
+                if(evt === 'resize'){
+                    evt = 'onresize';
+                }
+                if(type === 'add'){
+                    target.attachEvent(evt,func);
+                }else{
+                    target.detachEvent(evt,func);
+                }
             }else{
-                target.removeEventListener(evt,func,false);
+                if(type === 'add'){
+                    target.addEventListener(evt,func,false);
+                }else{
+                    target.removeEventListener(evt,func,false);
+                }
             }
         }
 
@@ -185,8 +242,9 @@
                 while(i<il){
                     var bp = hidden.breakpoints[i];
                     var wd = size.x;
+                    //TODO needed or height not important? = not needed when window (due to debugging) is smaller ....or clientWidth bug? (orientation?)
                     if(size.x < size.y){
-                        wd = size.y;
+//                        wd = size.y;
                     }
                     if(wd <= bp.width){
                         breakpoint = bp;
@@ -225,9 +283,11 @@
         function resize(){
             //window is resized, execute checkup, if necessary
             clearInterval(hidden.resizeWait);
-
             //execute only with different window dimensions (on mobile executed twice!)
             var nw = window.innerWidth+'x'+window.innerHeight;
+            if(hidden.isIE8){
+                nw = document.body.clientWidth+'x'+document.body.clientHeight;
+            }
             if(hidden.resizeDimensions !== nw){
                 hidden.resizeDimensions = nw;
                 this.execute(document);
@@ -242,7 +302,7 @@
         }
 
         return {
-            version: '0.9.0',
+            version: '1.0.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -335,6 +395,9 @@
                     //not available anymore
                     return;
                 }
+                if(hidden.isIE8 && document.readyState != 'complete'){
+                    return;
+                }
 
                 //cleanup listener
                 event('remove','DOMContentLoaded',this.loaded);
@@ -343,13 +406,16 @@
                 if(!hidden.disableIntrospection){
                     // DOM content loaded
                     if (hidden.observer === null) {
+                        if(hidden.isIE8){
+                            e.target = document;
+                        }
                         //check the whole page before any changes happen
                         this.execute(e.target);
                     }else{
                         hidden.observer.observe(document.body, {
                             attributes: true,
                             childList: true,
-                            characterData: true,
+                            characterData: false,
                             subtree: true,
                             attributeFilter: ['data-src']
                         });
@@ -383,17 +449,14 @@
                 //listen for DOM & change events
                 var base = this;
                 var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-                if (MutationObserver === undefined) {
+                if (MutationObserver === undefined || hidden.isIE8) {
                     event('add','DOMAttrModified',function(e){
-                        //DOM attribute modified, not supported in webkit
-                        //TODO Safari 5.0+ MutationObserver support, Chrome 18
+                        //DOM attribute modified, not supported in webkit (will use MutationObserver there)
+                        base.execute(e.target);
                     });
                     //TODO issues with IE9 - http://help.dottoro.com/ljmcxjla.php
                     event('add','DOMNodeInserted',nodeInserted.bind(base));
-                    event('add','DOMSubtreeModified',function(e){
-                        //TODO nothing?
-                        //console.debug('Rimg:','DOM subtree modified',e.target);
-                    });
+                    //ignore DOMSubtreeModified while DOMAttrModified is used, while performance does not allow 2 listeners
                 }else{
                     hidden.observer = new MutationObserver(function(mutations) {
                         mutations.forEach(function(mutation) {

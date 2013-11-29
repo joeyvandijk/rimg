@@ -10,7 +10,7 @@
         Rimg.disableIntrospection();
 
         window.onload = function(e){
-            console.log('Window loaded, loading complete.',e.target);
+            console.log('Window loaded, loading complete:', e != undefined ? e.target : 'no target');
 
             Rimg.configure('-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x');
             Rimg.execute(document.querySelector('img'));
@@ -24,7 +24,6 @@
         function click(){
             var img = document.createElement('img');
             img.className = 'test'+item;
-            img.innerHTML = 'Een andere test'+item;
             img.setAttribute('data-src','images/image2.jpg');
             document.body.appendChild(img);
 
@@ -35,6 +34,12 @@
         var adjustment = 0;
         function adjust(){
             var test = document.querySelector('img');
+            if(window.addEventListener === undefined){
+                //IE8
+                test = document.body.getElementsByTagName('img')[0];
+            }else{
+                test = document.querySelector('img');
+            }
             if(adjustment % 2){
                 test.setAttribute('data-src','images/image.jpg');
             }else{

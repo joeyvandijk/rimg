@@ -116,13 +116,20 @@ Please do test, check and come with pull requests/issues/remarks to further exte
   
 # FAQ
 See the [Wiki](wiki/FAQ) for more information.
-  
-  
-  
+
+
+
+# Supports
+* IE8+
+* Chrome
+* Firefox
+* Safari
+
+
+
 # TODO
-* bandwidth detection solution (optional) 
-* namespace change (optional) 
+* bandwidth detection solution (optional)
 * data-src attribute changed (not-cross browser support?)
-* code refactoring (async? / optional)
 * object way of initializing (disable/etc) (optional)  
 * casperjs - automated tests
+* "echo" determine if visible to enable the change (optional)

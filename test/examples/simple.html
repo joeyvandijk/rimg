@@ -14,7 +14,6 @@
             function click(){
                 var img = document.createElement('img');
                 img.className = 'test'+item;
-                img.innerHTML = 'Een andere test'+item;
                 img.setAttribute('data-src','images/image2.jpg');
                 document.body.appendChild(img);
                 item++;
@@ -22,7 +21,13 @@
 
             var adjustment = 0;
             function adjust(){
-                var test = document.querySelector('img');
+                var test;
+                if(window.addEventListener === undefined){
+                    //IE8
+                    test = document.body.getElementsByTagName('img')[0];
+                }else{
+                    test = document.querySelector('img');
+                }
                 if(adjustment % 2){
                     test.setAttribute('data-src','images/image.jpg');
                 }else{
