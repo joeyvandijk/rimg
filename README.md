@@ -103,6 +103,7 @@ Please do test, check and come with pull requests/issues/remarks to further exte
   
   
 # Changelog
+1.0.0 IE8 support + fixed bugs  
 0.9.0 version bump + fixed visual performance (less latency) + cleaned error when no breakpoint defined  
 0.4.1 fixed issue with body element not always as 2nd option  
 0.4.0 fixed issue with html comments blocking its execution  
@@ -132,4 +133,4 @@ See the [Wiki](wiki/FAQ) for more information.
 * data-src attribute changed (not-cross browser support?)
 * object way of initializing (disable/etc) (optional)  
 * casperjs - automated tests
-* "echo" determine if visible to enable the change (optional)
+* "echo" determine if images are visible to enable the change or wait (optional)
