@@ -2,7 +2,6 @@
 
 !function(){
     if(!console){
-        alert('console not found')
         console = {
             log: function(){},
             error: function(){}
@@ -60,7 +59,6 @@
         };
 
         if(window.addEventListener === undefined){
-            alert('is IE8')
             hidden.isIE8 = true;
         }
 
