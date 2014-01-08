@@ -10,17 +10,30 @@
         Rimg.disableIntrospection();
 
         window.onload = function(e){
-            console.log('Window loaded, loading complete:', e != undefined ? e.target : 'no target');
-
-            Rimg.configure('-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x');
-            Rimg.execute(document.querySelector('img'));
+            Rimg.configure({
+				breakpoint:'-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x'
+			});
+            Rimg.execute(find('img'));
         }
 
         window.onresize = function(e){
-            Rimg.execute(document.querySelector('img'));
+            Rimg.execute(find('img'));
         }
 
         var item = 0;
+
+		function find(identifier){
+			if(document.querySelector && document.querySelector(identifier)){
+				return document.querySelector(identifier);
+			}else{
+				if(identifier.indexOf('#') != -1){
+					return document.getElementById(identifier);
+				}else{
+					return document.getElementsByClassName(identifier)[0];
+				}
+			}
+		}
+
         function click(){
             var img = document.createElement('img');
             img.className = 'test'+item;
@@ -33,13 +46,7 @@
 
         var adjustment = 0;
         function adjust(){
-            var test = document.querySelector('img');
-            if(window.addEventListener === undefined){
-                //IE8
-                test = document.body.getElementsByTagName('img')[0];
-            }else{
-                test = document.querySelector('img');
-            }
+            var test = find('img');
             if(adjustment % 2){
                 test.setAttribute('data-src','images/image.jpg');
             }else{
@@ -62,7 +69,7 @@
 <body>
 <h1>Manual welcome</h1>
 <p>Just a test where you will need to manually define which images need to be responsive. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
-<img data-src="images/image.jpg" data-width="320" data-height="212" id="second"/>
+<img data-src="images/image.jpg" id="second"/>
 <!-- OPTIONAL: -->
 <noscript>
     <img src="images/image-small.jpg">

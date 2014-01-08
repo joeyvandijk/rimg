@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>async test</title>
+	<script>
+		var item = 0;
+
+		function find(identifier){
+			if(document.querySelector && document.querySelector(identifier)){
+				return document.querySelector(identifier);
+			}else{
+				if(identifier.indexOf('#') != -1){
+					return document.getElementById(identifier);
+				}else{
+					return document.getElementsByClassName(identifier)[0];
+				}
+			}
+		}
+
+		function click(){
+			var img = document.createElement('img');
+			img.className = 'test'+item;
+			img.setAttribute('data-src','images/image2.jpg');
+			document.body.appendChild(img);
+			item++;
+		}
+
+		var adjustment = 0;
+		function adjust(){
+			var test = find('img');
+			if(adjustment % 2){
+				test.setAttribute('data-src','images/image.jpg');
+			}else{
+				test.setAttribute('data-src','images/image2.jpg');
+			}
+			adjustment++;
+		}
+	</script>
+	<style type="text/css">
+		img{
+			display: block;
+			width: 100%;
+			height: auto;
+			border: 1px solid #333;
+		}
+	</style>
+</head>
+<body>
+<h1>An async welcome</h1>
+<p>Just a simple test with responsive images. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
+<img data-src="images/image.jpg"/>
+<!-- OPTIONAL: -->
+<noscript>
+	<img src="images/image-small.jpg">
+</noscript>
+<script>
+	var RimgOptions = {
+		breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x',
+	}
+</script>
+<script async src="rimg.min.js"></script>
+</body>
+</html>

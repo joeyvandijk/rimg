@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>lazy loading (scroll) test</title>
+	<script>
+		var RimgOptions = {
+			breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x',
+			offset: {x:0,y:100}
+		}
+	</script>
+	<script src="rimg.min.js"></script>
+	<script>
+		var item = 0;
+
+		function find(identifier){
+			if(document.querySelector && document.querySelector(identifier)){
+				return document.querySelector(identifier);
+			}else{
+				if(identifier.indexOf('#') != -1){
+					return document.getElementById(identifier);
+				}else{
+					return document.getElementsByClassName(identifier)[0];
+				}
+			}
+		}
+
+		function click(){
+			var img = document.createElement('img');
+			img.className = 'test'+item;
+			img.setAttribute('data-src','images/image2.jpg');
+			document.body.appendChild(img);
+			item++;
+		}
+
+		var adjustment = 0;
+		function adjust(){
+			var test = find('img');
+			if(adjustment % 2){
+				test.setAttribute('data-src','images/image.jpg');
+			}else{
+				test.setAttribute('data-src','images/image2.jpg');
+			}
+			adjustment++;
+		}
+	</script>
+	<style type="text/css">
+		img{
+			display: block;
+			width: 100%;
+			height: auto;
+			min-height:60%;
+			border: 1px solid #ff6600;
+		}
+		section{
+			width:100%;
+			margin: 0;
+			padding: 0;
+		}
+		section > article{
+			width:100%;
+			font-size:0;/*remove whitespace!*/
+		}
+		article > img{
+			width: 49%;
+			min-height:30%;
+			border:0;
+			border-left:1px solid #ff6600;
+			display:inline-block;
+		}
+	</style>
+</head>
+<body>
+<h1>Hello to the lazy loading example</h1>
+<section>
+	<img data-src="images/image.jpg"/>
+	<img data-src="images/image.jpg"/>
+	<article>
+		<img data-src="images/image.jpg"/>
+		<img data-src="images/image.jpg"/>
+	</article>
+	<img data-src="images/image.jpg"/>
+	<img data-src="images/image.jpg"/>
+	<article>
+		<img data-src="images/image.jpg"/>
+		<img data-src="images/image.jpg"/>
+	</article>
+	<img data-src="images/image.jpg"/>
+</section>
+<!-- OPTIONAL: -->
+<noscript>
+	<img src="images/image-small.jpg">
+</noscript>
+</body>
+</html>

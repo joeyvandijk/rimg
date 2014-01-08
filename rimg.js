@@ -52,9 +52,12 @@
             status : 'init',
             observer : null,
             breakpoints : [],
-            resizeWait: null,
-            resizeDimensions: '',
+            images: [],
+            offset:{x:100,y:100},
+            resizeInfo:{wait:null,time:null},
+            resizeDimensions: {width:0,height:0},
             disableIntrospection: false,
+            disableLazyLoading: false,
             isIE8: false
         };
 
@@ -172,16 +175,26 @@
         }
 
         //discover initial settings
-        if(typeof window.RimgBreakpoint !== 'undefined'){
+        if(typeof window.RimgOptions !== 'undefined'){
             //validate
-            var bpts = parseBreakpoints(RimgBreakpoint);
+            var bpts = parseBreakpoints(window.RimgOptions.breakpoint);
             if(bpts !== null){
                 hidden.breakpoints = bpts;
             }
+            if(window.RimgOptions.disableIntrospection === true){
+                hidden.disableIntrospection = true;
+            }
+            if(window.RimgOptions.disableLazyLoading === true){
+                hidden.disableLazyLoading = true;
+            }
+            if(window.RimgOptions.offset != null && typeof window.RimgOptions.offset.x === 'number' && typeof window.RimgOptions.offset.y === 'number'){
+                hidden.offset.x = window.RimgOptions.offset.x;
+                hidden.offset.y = window.RimgOptions.offset.y;
+            }
             //clean reference
-            window.RimgBreakpoint = undefined;
+            window.RimgOptions = undefined;
         }else{
-            console.log('(remark) Rimg: no breakpoints defined (yet), check the documentation.');
+            console.log('(remark) Rimg: no breakpoints defined (yet), check the documentation or manually adjust it.');
         }
 
         function event(type,evt,func,target){
@@ -214,11 +227,40 @@
             }
         }
 
+        function addImage(value){
+            //add an image but check if it already is saved
+            var i = 0;
+            var il = hidden.images.length;
+            var found = false;
+            while(i<il){
+                if(hidden.images[i] === value){
+                    found = true;
+                    break;
+                }
+                i++;
+            }
+            if(!found){
+                hidden.images.push(value);
+            }
+        }
+
         function adjust(value){
+            var visible = true;
+            if(!hidden.disableLazyLoading){
+                //TODO readme-request : min-height (CSS) is needed + CSS is rule with RIMG! = don't know size when not yet loaded!
+                //calculate bounding rect & check if in browser window range
+                var rect = value.getBoundingClientRect();
+                visible = !(
+                    ((rect.top + rect.height) < (-hidden.offset.y)) ||
+                    (rect.top > (-hidden.offset.y + hidden.resizeDimensions.height + hidden.offset.y)) ||
+                    ((rect.left + rect.width) < -hidden.offset.x) ||
+                    (rect.left > (-hidden.offset.x + hidden.resizeDimensions.width + hidden.offset.x))
+                );
+            }
             //change src property when appropriate
             var ratio = window.devicePixelRatio || 1;
             var data = value.getAttribute('data-src');
-            if(data !== null){
+            if(data !== null && visible){
                 //only adjust images with data-src property
                 var file = data.substr(0,data.lastIndexOf('.'));
                 var extension = data.substr(data.lastIndexOf('.'));
@@ -265,6 +307,7 @@
         function inspect(value){
             //check node itself if it is an image or has children
             if(value.nodeName.toLowerCase() === 'img'){
+                addImage(value);
                 adjust(value);
             }else{
                 //walk through all node children until you find img files
@@ -278,29 +321,54 @@
             }
         }
 
+        function adjustImages(){
+            var i = 0;
+            var il = hidden.images.length;
+            while(i<il){
+                adjust(hidden.images[i]);
+                i++;
+            }
+        }
+
+        function checkDimensions(){
+            //execute only with different window dimensions (on mobile executed twice!)
+            var wd,hg;
+            if(hidden.isIE8){
+                wd = document.body.clientWidth;
+                hg = document.body.clientHeight;
+            }else{
+                wd = window.innerWidth;
+                hg = window.innerHeight;
+            }
+            var changed = false;
+            if(hidden.resizeDimensions.width !== wd || hidden.resizeDimensions.height !== hg){
+                hidden.resizeDimensions.width = wd;
+                hidden.resizeDimensions.height = hg;
+                changed = true;
+            }
+            return changed;
+        }
+
         function resize(){
             //window is resized, execute checkup, if necessary
-            clearInterval(hidden.resizeWait);
-            //execute only with different window dimensions (on mobile executed twice!)
-            var nw = window.innerWidth+'x'+window.innerHeight;
-            if(hidden.isIE8){
-                nw = document.body.clientWidth+'x'+document.body.clientHeight;
-            }
-            if(hidden.resizeDimensions !== nw){
-                hidden.resizeDimensions = nw;
-                this.execute(document);
+            clearTimeout(hidden.resizeInfo.wait);
+
+            if(checkDimensions()){
+                //adjust image sources, if necessary
+                adjustImages();
             }
 
             //outside to ensure correct timing difference
-            hidden.time = new Date().getTime();
+            hidden.resizeInfo.time = new Date().getTime();
         }
 
         function nodeInserted(e){
+            //walk through DOM to inspect itself & its children
             this.execute(e.target);
         }
 
         return {
-            version: '1.0.0',
+            version: '1.5.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -309,8 +377,14 @@
                 }else if(target === undefined){
                     console.error('Rimg.execute(): undefined value, check your code to add a valid DOM element to this function.');
                     return;
+                }else if(hidden.breakpoints.length === 0){
+                    console.log('(remark) Rimg.execute(): no breakpoints defined (yet), probably because of manual control.');
+                    return;
                 }
                 if(target.nodeName === '#document'){
+                    //clean images array, due to reset
+                    hidden.images.splice(0,hidden.images.length);
+
                     if(target.childNodes.length > 1){
                         //find html node
                         var html;
@@ -360,12 +434,31 @@
                 }
             },
             configure: function(value){
-                var breakpoints = parseBreakpoints(value);
-                if(breakpoints !== null){
-                    hidden.breakpoints = breakpoints;
+                if(!(value instanceof Object)){
+                    console.error('Rimg: your definition is not an object, check the documentation.');
+                    return;
+                }
+                if(value.breakpoint){
+                    var breakpoints = parseBreakpoints(value.breakpoint);
+                    if(breakpoints !== null){
+                        hidden.breakpoints = breakpoints;
+                    }
+                }
+                if(value.disableIntrospection === true){
+                    hidden.disableIntrospection = true;
+                }
+                if(value.disableLazyLoading === true){
+                    hidden.disableLazyLoading = true;
+                }
+                if(value.offset != null && typeof value.offset.x === 'number' && typeof value.offset.y === 'number'){
+                    hidden.offset.x = value.offset.x;
+                    hidden.offset.y = value.offset.y;
                 }
 
                 if(hidden.status === 'ready' && !hidden.disableIntrospection){
+                    //save dimensions
+                    checkDimensions();
+
                     //if DOM loaded, execute right away
                     this.execute(document);
                 }
@@ -377,15 +470,23 @@
                 }
 
                 //cleanup
-                if(hidden.resizeWait !== null){
-                    clearInterval(hidden.resizeWait);
+                if(hidden.resizeInfo.wait !== null){
+                    clearTimeout(hidden.resizeInfo.wait);
                 }
 
-                if(hidden.time === undefined || new Date().getTime() - hidden.time > 1000){
+                //TODO (clear)timeout more useful?
+                if(hidden.resizeInfo.time === null || new Date().getTime() - hidden.resizeInfo.time > 1000){
+                    //first time || long ago
                     resize.bind(this)();
                 }else{
                     //wait 100ms to ensure performant and not a blocking script execution
-                    hidden.resizeWait = setInterval(resize.bind(this),100);
+                    hidden.resizeInfo.wait = setTimeout(resize.bind(this),100);
+                }
+            },
+            scrolled: function(e){
+                if(!hidden.disableLazyLoading){
+                    //execute directly for best performance / feel = "skip" will be done at adjustment check
+                    adjustImages();
                 }
             },
             loaded: function(e){
@@ -400,15 +501,15 @@
                 //cleanup listener
                 event('remove','DOMContentLoaded',this.loaded);
 
+                //save dimensions
+                checkDimensions();
+
                 //initial DOM checkup
                 if(!hidden.disableIntrospection){
                     // DOM content loaded
                     if (hidden.observer === null) {
-                        if(hidden.isIE8){
-                            e.target = document;
-                        }
                         //check the whole page before any changes happen
-                        this.execute(e.target);
+                        this.execute(document);
                     }else{
                         hidden.observer.observe(document.body, {
                             attributes: true,
@@ -424,7 +525,15 @@
                     //listen for browser resize
                     event('add','resize',this.resized.bind(this));
                 }
+
+                //initial scrolling listener
+                if(!hidden.disableLazyLoading){
+                    event('add','scroll',this.scrolled.bind(this));
+                }
                 hidden.status = 'ready';
+            },
+            disableLazyLoading: function(){
+                hidden.disableLazyLoading = true;
             },
             disableIntrospection: function(){
                 hidden.disableIntrospection = true;
@@ -468,14 +577,20 @@
                 }
                 hidden.status = 'progress';
 
-                // wait until DOM is loaded
-                event('add','DOMContentLoaded',this.loaded.bind(this));
+                //check current DOM status (already loaded?) = async support
+                if((document.readyState === 'interactive' || document.readyState === 'complete') && document.body){
+                    this.loaded.bind(this)();
+                }else{
+                    // wait until DOM is loaded
+                    event('add','DOMContentLoaded',this.loaded.bind(this));
+                }
             }
         };
     };
 
     // browser
     window.Rimg = Object.create(Rimg());
+
     // start listening
     window.Rimg.initialize();
 }();
