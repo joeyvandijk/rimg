@@ -132,7 +132,7 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # FAQ
-See the [Wiki](wiki/home) for more information.
+See the [Wiki](https://github.com/joeyvandijk/rimg/wiki) for more information.
 
 
 
