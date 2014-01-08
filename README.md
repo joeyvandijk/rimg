@@ -118,7 +118,7 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
-1.5.0 async bug fixed + scroll/lazy-load added + breaking change with RimgBreakpoint into RimgOptions + faster looping through images + better input-validation + added more examples in /test
+1.5.0 async bug fixed + scroll/lazy-load added + breaking change with RimgBreakpoint into RimgOptions + faster looping through images + better input-validation + added more examples in /test  
 1.0.0 IE8 support + fixed bugs  
 0.9.0 version bump + fixed visual performance (less latency) + cleaned error when no breakpoint defined  
 0.4.1 fixed issue with body element not always as 2nd option  
