@@ -32,9 +32,20 @@
         <hr>
 
         <section id="main_content">
-            <h3>Example</h3>
+            <h3>RIMG</h3>
             <p>"Responsive-image" (RIMG) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition). The source of this page shows how the image is being changed by pure Javascript.</p>
             <img data-src="images/image.jpg"/>
+			<h3>Features</h3>
+			<ul>
+				<li>responsive images that respond to <b>retina</b>-screens, <b>browser-resizes</b>, <b>DOMContentLoaded-events</b> and <b>DOM-changes</b></li>
+				<li><b>lazy loading</b> of images: scroll down and Rimg will load the almost visible images (offset option).</li>
+				<li><b>reconfigure</b> after Rimg is loaded/executed by using Rimg.configure({breakpoint:'',...});</li>
+				<li>disable auto introspection, so only manually adjustable by using Rimg.configure(breakpoints); and Rimg.execute(targetElement);</li>
+				<li>only &lt;img&gt; elements with <b>data-src</b> property will be adjusted by Rimg, so implement on one, some or all images.</li>
+				<li>pure frontend ( <b>javascript</b> ) solution and no server-side setup/code is necessary.</li>
+				<li><b>art direction support</b>, respect the chosen filenaming strategy and alter your &lt;img&gt; in any way (square?) and save the file (square?) used in that breakpoint and everything works!</li>
+				<li>independent library, it is <b>NO</b> plugin for jQuery, you don't need to load any other javascript library.</li>
+			</ul>
             <p></p>
             <h3>More information</h3>
             <ul>
@@ -65,7 +76,8 @@
             <p>Not only on initial load or resizes will RIMG update your images, but also when they are added through code (DOM-append). For example click <a href="javascript:addImage();">here</a> to add images below through Javascript.</p>
             <article>
             	<img data-src="images/image.jpg"/>
-            </article>            
+            </article>
+			<img data-src="images/image.jpg"/>
         </section>
 
         <footer>Rimg is maintained by <a href="https://github.com/joeyvandijk">joeyvandijk</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</footer>

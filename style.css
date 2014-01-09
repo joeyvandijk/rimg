@@ -344,6 +344,11 @@ footer a:hover {
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
 
+b{
+    font-weight:bold;
+    color:#333;
+}
+
 /* #Media Queries
 ================================================== */
 
