@@ -51,7 +51,7 @@
 			display: block;
 			width: 100%;
 			height: auto;
-			min-height:60%;
+			min-height:30%;
 			border: 1px solid #ff6600;
 		}
 		section{
@@ -65,10 +65,23 @@
 		}
 		article > img{
 			width: 49%;
-			min-height:30%;
+			min-height:10%;
 			border:0;
 			border-left:1px solid #ff6600;
 			display:inline-block;
+		}
+		@media (min-width: 600px) {
+			/*needed while initially the <img> height = 0 which will load all options, while you don't need that*/
+			img{
+				min-height: 60%;
+			}
+			article > img{
+				ming-height:30%;
+			}
+		}
+		img.small {
+			width: 19%;
+			height:auto;
 		}
 	</style>
 </head>
@@ -86,6 +99,13 @@
 	<article>
 		<img data-src="images/image.jpg"/>
 		<img data-src="images/image.jpg"/>
+	</article>
+	<article>
+		<img class="small" data-src="images/image.jpg"/>
+		<img class="small" data-src="images/image.jpg"/>
+		<img class="small" data-src="images/image.jpg"/>
+		<img class="small" data-src="images/image.jpg"/>
+		<img class="small" data-src="images/image.jpg"/>
 	</article>
 	<img data-src="images/image.jpg"/>
 </section>
