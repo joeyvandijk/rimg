@@ -53,6 +53,8 @@
             observer : null,
             breakpoints : [],
             images: [],
+            imageEvents:{changed:0,errors:0},
+            imagesLoaded:null,
             offset:{x:100,y:100},
             resizeInfo:{wait:null,time:null},
             resizeDimensions: {width:0,height:0},
@@ -60,6 +62,7 @@
             disableLazyLoading: false,
             isIE8: false
         };
+        //TODO fix callback for complete-event
 
         if(window.addEventListener === undefined){
             hidden.isIE8 = true;
@@ -191,10 +194,27 @@
                 hidden.offset.x = window.RimgOptions.offset.x;
                 hidden.offset.y = window.RimgOptions.offset.y;
             }
+            if(window.RimgOptions.complete != null && typeof window.RimgOptions.complete === 'function'){
+                hidden.imagesLoaded = window.RimgOptions.complete;
+            }
             //clean reference
             window.RimgOptions = undefined;
         }else{
             console.log('(remark) Rimg: no breakpoints defined (yet), check the documentation or manually adjust it.');
+        }
+
+        function imageEvent(e){
+            hidden.imageEvents.changed--;
+            if(e.type === 'error'){
+                hidden.imageEvents.errors++;
+            }
+
+            if(hidden.imageEvents.changed === 0){
+                //all images loaded
+                if(hidden.imagesLoaded){
+                    hidden.imagesLoaded(hidden.imageEvents.errors > 0 ? true : false);
+                }
+            }
         }
 
         function event(type,evt,func,target){
@@ -247,7 +267,6 @@
         function adjust(value){
             var visible = true;
             if(!hidden.disableLazyLoading){
-                //TODO readme-request : min-height (CSS) is needed + CSS is rule with RIMG! = don't know size when not yet loaded!
                 //calculate bounding rect & check if in browser window range
                 var rect = value.getBoundingClientRect();
                 visible = !(
@@ -299,7 +318,13 @@
 
                 if(value.getAttribute('src') !== file+breakpoint.getSrc(ratio)+extension){
                     //set the appropriate version of the image
-                    value.setAttribute('src',file+breakpoint.getSrc(ratio)+extension);
+                    var item = file+breakpoint.getSrc(ratio)+extension;
+                    value.setAttribute('src',item);
+
+                    hidden.imageEvents.changed++;
+
+                    event('add','load',imageEvent,value);
+                    event('add','error',imageEvent,value);
                 }
             }
         }
@@ -368,7 +393,7 @@
         }
 
         return {
-            version: '1.5.0',
+            version: '1.6.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){

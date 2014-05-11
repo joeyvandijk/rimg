@@ -69,6 +69,15 @@
 			border-left:1px solid #ff6600;
 			display:inline-block;
 		}
+		@media (min-width: 600px) {
+			/*needed while initially the <img> height = 0 which will load all options, while you don't need that*/
+			img{
+				min-height: 60%;
+			}
+			article > img{
+				ming-height:30%;
+			}
+		}
 	</style>
 </head>
 <body>
