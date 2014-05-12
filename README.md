@@ -146,17 +146,17 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
-1.6.0 added complete-event + gulpjs
-1.5.0 async bug fixed + scroll/lazy-load added + breaking change with RimgBreakpoint into RimgOptions + faster looping through images + better input-validation + added more examples in /test
-1.0.0 IE8 support + fixed bugs
-0.9.0 version bump + fixed visual performance (less latency) + cleaned error when no breakpoint defined
-0.4.1 fixed issue with body element not always as 2nd option
-0.4.0 fixed issue with html comments blocking its execution
-0.3.5 moved bandwidth detection into a separate branch
-0.3.0 firefox bug (width=0) fixed
-0.2.5 mutations fix
-0.2.0 retina-fix + tests made
-0.1.0 initial release
+1.6.0 added complete-event + gulpjs  
+1.5.0 async bug fixed + scroll/lazy-load added + breaking change with RimgBreakpoint into RimgOptions + faster looping through images + better input-validation + added more examples in /test  
+1.0.0 IE8 support + fixed bugs  
+0.9.0 version bump + fixed visual performance (less latency) + cleaned error when no breakpoint defined  
+0.4.1 fixed issue with body element not always as 2nd option  
+0.4.0 fixed issue with html comments blocking its execution  
+0.3.5 moved bandwidth detection into a separate branch  
+0.3.0 firefox bug (width=0) fixed  
+0.2.5 mutations fix  
+0.2.0 retina-fix + tests made  
+0.1.0 initial release  
 
 
 
