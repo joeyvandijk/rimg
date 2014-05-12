@@ -1,4 +1,5 @@
-*.iml
-.idea/*
 node_modules/*
 test/node_modules/*
+npm-debug.log
+.idea/*
+*.iml
