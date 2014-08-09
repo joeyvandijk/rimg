@@ -64,7 +64,7 @@ gulp.task('compress',['clean'], function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-    gulp.watch('rimg.js', ['lint','scripts']);
+    gulp.watch('rimg.js', ['default']);
 });
 
 gulp.task('clean',['copy-min-js'], function() {

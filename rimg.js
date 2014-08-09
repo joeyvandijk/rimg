@@ -131,7 +131,8 @@
                                 bpDefinition.width = Number(part.substr(0,part.length-1));
                             }else if(part.match(/^[0-9]{0,4}h/gi) !== null){
                                 bpDefinition.height = Number(part.substr(0,part.length-1));
-                            }else if(part.match(/[0-9]{1}x/gi) !== null){
+                            }else if(part.match(/[0-9]{1}x$/gi) !== null){
+                                //only match 1x, 2x at the end, so paths can also have 320x in their name
                                 bpDefinition.pixelRatio.push(Number(part.substr(0,part.length-1)));
                             }else{
                                 bpDefinition.src.push(part);
@@ -393,7 +394,7 @@
         }
 
         return {
-            version: '1.6.0',
+            version: '1.7.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){

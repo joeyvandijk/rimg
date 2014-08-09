@@ -6,7 +6,7 @@ It is based on the idea that when the DOM is loaded, it will traverse the DOM, l
 Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoints. Just provide the image basename and let Rimg do the adjustments.
 
 See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg/tree/master#breakpoints) how the breakpoints are used.
-Current version: **v1.6.0** or check [cdnjs](http://www.cdnjs.com/libraries/rimg).
+Current version: **v1.7.0** or check [cdnjs](http://www.cdnjs.com/libraries/rimg).
 
 ## Features
 * responsive images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
@@ -36,7 +36,7 @@ var RimgOptions = { breakpoint:'-micro 160w 1x, -micro-retina 160w 2x,
 
 before you load the minified version of Rimg.
 
-* Load the script, like ```<script src="//cdnjs.cloudflare.com/ajax/libs/rimg/1.6.0/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tag.
+* Load the script, like ```<script src="//cdnjs.cloudflare.com/ajax/libs/rimg/1.7.0/rimg.min.js"></script>```. You can put it before the ```</body>``` or before the ```</head>``` tag.
 
 will result in something like:
 
@@ -49,7 +49,7 @@ var RimgOptions = { breakpoint:'-tiny 320w 1x, -tiny-retina 320w 2x,
 	-large 1024w 1x, -large-retina 1024w 2x,
 	-huge w 1x'};
 </script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/rimg/1.6.0/rimg.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/rimg/1.7.0/rimg.min.js"></script>
 </head>
 <body>
    <img data-src="image.jpg"/>
@@ -146,7 +146,8 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
-1.6.0 added complete-event + gulpjs  
+1.7.0 support for ```-320x``` naming of files
+1.6.0 added complete-event + gulpjs
 1.5.0 async bug fixed + scroll/lazy-load added + breaking change with RimgBreakpoint into RimgOptions + faster looping through images + better input-validation + added more examples in /test  
 1.0.0 IE8 support + fixed bugs  
 0.9.0 version bump + fixed visual performance (less latency) + cleaned error when no breakpoint defined  
