@@ -27,7 +27,7 @@ Current version: **v1.7.0**.
 ```javascript
 var RimgOptions = { breakpoint:'-micro 160w 1x, -micro-retina 160w 2x,
 -tiny 320w 1x, -tiny-retina 320w 2x,
--small 480w 1x, -s.mall-retina 480w 2x,
+-small 480w 1x, -small-retina 480w 2x,
 -medium 600w 1x, -medium-retina 600w 2x,
 -regular 768w 1x, -regular-retina 768w 2x,
 -large 1024w 1x, -large-retina 1024w 2x,
