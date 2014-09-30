@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>svg test</title>
+        <script>
+			var RimgOptions = {
+				breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x'
+			}
+        </script>
+        <script src="rimg.min.js"></script>
+        <style type="text/css">
+            img{
+            	display: block;
+                width: 100%;
+                height: auto;
+                min-height: 10px;
+                border: 1px solid #333;
+            }
+            p + img{
+                border:3px solid red;
+            }
+            p + img + img{
+                width: 200px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Simple welcome</h1>
+        <p>Just a simple test with responsive images. The SVG reference (red border) is not executed by RIMG.</p>
+        <img data-src="images/image.svg"/>
+        <img src="images/image.svg"/>
+        <img data-src="images/image.jpg"/>
+    </body>
+</html>    

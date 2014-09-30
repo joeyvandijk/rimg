@@ -1,31 +1,32 @@
 {
-    "name": "rimg",
-    "version": "1.5.0",
-    "description": "ERROR: No README.md file found!",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": "",
-    "author": "Joey van Dijk",
-    "dependencies":{
-        "grunt-contrib-clean":"0.6.x",
-        "grunt-contrib-compress":"0.10.x",
-        "grunt-contrib-uglify":"0.5.x",
-        "grunt-contrib-copy":"0.5.x",
-        "grunt-notify":"0.3.x",
-        "gulp":"3.8.x",
-        "gulp-uglify":"0.3.x",
-        "gulp-notify":"1.4.x",
-        "gulp-jshint":"1.8.x",
-        "gulp-clean":"0.3.x",
-        "gulp-rename":"1.2.x",
-        "gulp-gzip":"0.0.x"
-    },
-    "devDependencies":{
-        "grunt":"~0.4.5",
-        "grunt-contrib-jshint":"~0.10.0",
-        "grunt-contrib-nodeunit":"~0.3.3"
-    },
-    "license": "TT"
+  "name": "rimg",
+  "version": "1.5.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Joey van Dijk",
+  "dependencies": {
+    "grunt-contrib-clean": "0.6.x",
+    "grunt-contrib-compress": "0.12.x",
+    "grunt-contrib-copy": "0.6.x",
+    "grunt-contrib-uglify": "0.6.x",
+    "grunt-notify": "0.3.x",
+    "gulp": "3.8.x",
+    "gulp-clean": "0.3.x",
+    "gulp-gzip": "0.0.x",
+    "gulp-jshint": "1.8.x",
+    "gulp-notify": "1.8.x",
+    "gulp-rename": "1.2.x",
+    "gulp-uglify": "1.0.x",
+    "gulp-util": "3.0.x"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1"
+  },
+  "license": "TT"
 }

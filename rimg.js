@@ -62,7 +62,6 @@
             disableLazyLoading: false,
             isIE8: false
         };
-        //TODO fix callback for complete-event
 
         if(window.addEventListener === undefined){
             hidden.isIE8 = true;
@@ -248,6 +247,13 @@
             }
         }
 
+        function getExtension(value){
+            if(value){
+                return value.substr(value.lastIndexOf('.') + 1).toLowerCase();
+            }
+            return null;
+        }
+
         function addImage(value){
             //add an image but check if it already is saved
             var i = 0;
@@ -261,7 +267,19 @@
                 i++;
             }
             if(!found){
-                hidden.images.push(value);
+                var data;
+                if(value.nodeName.toLowerCase() === 'img'){
+                    //default <img>
+                    data = value.getAttribute('data-src');
+                }else{
+                    data = value.getAttribute('data-background-image');
+                }
+
+                var extension = getExtension(data);
+                if(extension && extension != 'svg'){
+                    //ignore svg images (are already scalable)
+                    hidden.images.push(value);
+                }
             }
         }
 
@@ -279,20 +297,40 @@
             }
             //change src property when appropriate
             var ratio = window.devicePixelRatio || 1;
-            var data = value.getAttribute('data-src');
+            var data;
+            var type;
+            if(value.nodeName.toLowerCase() === 'img'){
+                data = value.getAttribute('data-src');
+                type = 'image';
+            }else{
+                data = value.getAttribute('data-background-image');
+                type = 'background';
+            }
             if(data !== null && visible){
                 //only adjust images with data-src property
                 var file = data.substr(0,data.lastIndexOf('.'));
-                var extension = data.substr(data.lastIndexOf('.'));
+                var extension = getExtension(data);
                 var size = {x:value.width,y:value.height};
+                var property;
+                //backgroundImage has no maxWidth, but just width/height so use it for backgroundImage +
                 //firefox presents width/height with 0, so check getComputedStyle if necessary:
-                if(value.width === 0){
-                    size.x = window.getComputedStyle(value,null).maxWidth;
+                if(value.width === 0 || value.width === undefined){
+                    if(type === 'image'){
+                        property = 'maxWidth';
+                    }else{
+                        property = 'width';
+                    }
+                    size.x = window.getComputedStyle(value,null)[property];
                     size.x = size.x.replace('px','');
                     size.x = Number(size.x);
                 }
                 if(value.height === 0){
-                    size.y = window.getComputedStyle(value,null).maxHeight;
+                    if(type === 'image'){
+                        property = 'maxHeight';
+                    }else{
+                        property = 'height';
+                    }
+                    size.y = window.getComputedStyle(value,null)[property];
                     size.y = size.y.replace('px','');
                     size.y = Number(size.y);
                 }
@@ -316,12 +354,18 @@
                     //use latest
                     breakpoint = hidden.breakpoints[hidden.breakpoints.length-1];
                 }
-
-                if(value.getAttribute('src') !== file+breakpoint.getSrc(ratio)+extension){
+                var changed = false;
+                var newURL = file+breakpoint.getSrc(ratio)+'.'+extension;
+                if(type === 'image' && value.getAttribute('src') !== newURL && extension != 'svg'){
                     //set the appropriate version of the image
-                    var item = file+breakpoint.getSrc(ratio)+extension;
-                    value.setAttribute('src',item);
+                    value.setAttribute('src',newURL);
+                    changed = true;
+                }else if(type === 'background' && value.style.backgroundImage.indexOf(newURL) === -1 && extension != 'svg'){
+                    value.style.backgroundImage = 'url('+newURL+')';
+                }
 
+                if(changed){
+                    //the source image has changed, so check the load to execute final complete function
                     hidden.imageEvents.changed++;
 
                     event('add','load',imageEvent,value);
@@ -332,7 +376,7 @@
 
         function inspect(value){
             //check node itself if it is an image or has children
-            if(value.nodeName.toLowerCase() === 'img'){
+            if(value.nodeName.toLowerCase() === 'img' || value.hasAttribute('data-background-image')){
                 addImage(value);
                 adjust(value);
             }else{
@@ -394,7 +438,7 @@
         }
 
         return {
-            version: '1.7.0',
+            version: '1.9.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){

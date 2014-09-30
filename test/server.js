@@ -20,8 +20,7 @@ var app = http.createServer(function(req, res){
 
     // transfer arbitrary files from within
     // /www/example.com/public/*
-    send(req, url.parse(req.url).pathname)
-        .root('examples')
+    send(req, url.parse(req.url).pathname,{root:'examples'})
         .on('error', error)
         .on('directory', redirect)
         .pipe(res);

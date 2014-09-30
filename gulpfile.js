@@ -7,6 +7,8 @@ var jshint = require('gulp-jshint');
 var clean = require('gulp-clean');
 var rename = require("gulp-rename");
 var gzip = require("gulp-gzip");
+var gutil = require("gulp-util");
+var debugging = false;
 
 //------------------ CREATE TASKS: -----------------
 gulp.task('lint', function(){
@@ -31,7 +33,7 @@ gulp.task('lint', function(){
 gulp.task('scripts', function() {
     // Minify and copy all JavaScript (except vendor scripts)
     return gulp.src('rimg.js')
-        .pipe(uglify())
+        .pipe(debugging ? gutil.noop() : uglify())
         .pipe(gulp.dest('./test/examples/'))
         .pipe(notify("Gulp: script is parsed and uglified."));
 });
@@ -74,4 +76,9 @@ gulp.task('clean',['copy-min-js'], function() {
         .pipe(notify("Gulp: rimg.js is deleted."));
 });
 
+gulp.task('setDebug',function(){
+    debugging = true;
+});
+
 gulp.task('default', ['lint','scripts','copy-js','rename','copy-min-js','clean','compress']);
+gulp.task('test', ['setDebug','watch']);

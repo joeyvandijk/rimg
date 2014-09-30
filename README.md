@@ -1,25 +1,26 @@
 #RIMG
 
-"Responsive-image" (RIMG) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition).
+"Responsive-image" (Rimg) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition).
 
 It is based on the idea that when the DOM is loaded, it will traverse the DOM, looking for ```<img>```-nodes, and alter the ```src```-property. You can also [manually](https://github.com/joeyvandijk/rimg/tree/master#api) execute this task.
 Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoints. Just provide the image basename and let Rimg do the adjustments.
 
 See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg/tree/master#breakpoints) how the breakpoints are used.
-Current version: **v1.7.0**.
+Current version: **v1.9.0**.
 
 ## Features
 * responsive images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
 * **lazy loading of images**: scroll down and Rimg will load the almost visible images (offset option).
 * **reconfigure** after Rimg is loaded/executed by using ```Rimg.configure({breakpoint:'',...});```
 * **disable** auto introspection, so only **manually** adjustable by using ```Rimg.configure(breakpoints);``` and ```Rimg.execute(targetElement);```
-* only ```<img>``` elements with ```data-src``` property will be adjusted by Rimg, so implement on one, some or all images.
+* only ```<img>``` elements with a ```data-src``` property will be adjusted by Rimg, so implement on one, some or all images.
+* only elements with a ```data-background-image``` property will be adjusted by Rimg, so implement on one, some or all images. This is needed for images that will use **```background-size: cover```**.
 * pure frontend ( **javascript** ) solution and no server-side setup/code is necessary.
 * **art direction support**, respect the chosen filenaming strategy and alter your ```<img>``` in any way (square?) and save the file (square?) used in that breakpoint and everything works!
 * independent library, it is **NO** plugin for jQuery, you don't need to load any other javascript library.
-* supports **all file extensions** (```jpg```,```png```,```webp```,```gif```, etc.) while it uses (and not filter) the file extension.
+* supports **all file extensions** (```jpg```,```png```,```webp```,```gif```, etc.) while it uses (and not filter) the file extension. ```svg``` files are ignored.
 * **no user agent sniffing** and **no cookies** just JS reacting on the environment it is executed in.
-* **small** package with 2,9 kB (gzip) or 8,7 kB (plain)
+* **small** package : 3,1 kB (gzip) or 9,2 kB (plain)
 
 # Getting Started
 * Define custom filenaming strategy, like `-micro`,`-tiny`, `-small`, `-medium`, `-regular`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
@@ -68,6 +69,13 @@ Due to adding IE8 support, the mechanism works the same, but using HTML5 feature
 * [Mediaqueries](http://caniuse.com/#feat=css-mediaqueries) support in the browser you want to support.
 * Use `<meta name="viewport" content="width=device-width, initial-scale=1">` or another scale, but use the viewport-meta-tag to let Rimg do the work.
 
+### Background-size support
+
+While CSS3 added many features the most important one is to scale correctly background images with ```background-size:cover```. Rimg supports altering the ```background-image``` (CSS3) property depending on the dimensions of the element to adjust. You need to do 1 thing only
+
+```<div data-background-image="image.jpg"></div>```
+
+Rimg will recognize the ```data-background-image``` property and will alter the background image property depending on the CSS dimensions of the element. Let ```background-size``` determine how to scale the provided image inside the container, but let Rimg determine which file is appropriate.
 
 
 # Documentation
@@ -146,6 +154,7 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
+1.9.0 support for ```background-size``` (CSS3) + ignore ```svg``` file extension  
 1.7.0 support for ```-320x``` naming of files  
 1.6.0 added complete-event + gulpjs  
 1.5.0 async bug fixed + scroll/lazy-load added + breaking change with RimgBreakpoint into RimgOptions + faster looping through images + better input-validation + added more examples in /test  
@@ -179,7 +188,7 @@ You can build rimg.js yourself by using ```grunt``` or ```gulp```. Of course ins
 
 # Alternatives
 
-Many alternatives are available, but be aware of the differences. Some use APIs that are not have cross-browser support or provide features you do not need. Still there are interesting alternatives to RIMG like:
+Many alternatives are available, but be aware of the differences. Some use APIs that do not have cross-browser support or provide features you do not need. Still there are interesting alternatives to Rimg like:
 
 * [Riloadr](https://github.com/tubalmartin/riloadr) ~ client-side JS-only script
 * [Responsive.io](https://responsive.io) ~ service
@@ -192,4 +201,3 @@ Many alternatives are available, but be aware of the differences. Some use APIs 
 * bandwidth detection solution (optional)
 * data-src attribute changed (not-cross browser support?)
 * casperjs - automated tests
-* dispatch ready-event
