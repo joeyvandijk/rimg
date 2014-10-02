@@ -92,7 +92,7 @@ var RimgOptions = { breakpoint: '-small 480w 1x, -small-retina 480w 2x,
 -regular 768w 1x, -regular-retina 768w 2x,
 -large 1024w 1x, -large-retina 1024w 2x',
 disableIntrospection: false,
-disableScrolling: false};
+disableLazyLoading: false};
 ```
 
 ## RimgOptions
