@@ -276,7 +276,7 @@
                 }
 
                 var extension = getExtension(data);
-                if(extension && extension != 'svg'){
+                if(extension && extension != 'svg' && data != null && data != ''){
                     //ignore svg images (are already scalable)
                     hidden.images.push(value);
                 }
@@ -306,7 +306,7 @@
                 data = value.getAttribute('data-background-image');
                 type = 'background';
             }
-            if(data !== null && visible){
+            if(data !== null && data != '' && visible){
                 //only adjust images with data-src property
                 var file = data.substr(0,data.lastIndexOf('.'));
                 var extension = getExtension(data);
@@ -438,7 +438,7 @@
         }
 
         return {
-            version: '1.9.0',
+            version: '1.9.1',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){

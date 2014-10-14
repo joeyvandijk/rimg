@@ -6,7 +6,7 @@ It is based on the idea that when the DOM is loaded, it will traverse the DOM, l
 Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoints. Just provide the image basename and let Rimg do the adjustments.
 
 See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg/tree/master#breakpoints) how the breakpoints are used.
-Current version: **v1.9.0**.
+Current version: **v1.9.1**.
 
 ## Features
 * responsive images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
@@ -154,6 +154,7 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
+1.9.1 ignore empty data-src values  
 1.9.0 support for ```background-size``` (CSS3) + ignore ```svg``` file extension  
 1.7.0 support for ```-320x``` naming of files  
 1.6.0 added complete-event + gulpjs  
