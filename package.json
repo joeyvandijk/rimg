@@ -1,32 +1,25 @@
 {
   "name": "rimg",
-  "version": "1.5.0",
-  "description": "ERROR: No README.md file found!",
-  "main": "index.js",
+  "version": "1.9.1",
+  "description": "Rimg supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition).",
+  "main": "rimg.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cd test;clear;casperjs --verbose test examples/*.js --pre=pre.js",
+    "server":"cd test;node server",
+    "check":"npm update;cd test;npm update"
   },
   "repository": "",
   "author": "Joey van Dijk",
   "dependencies": {
-    "grunt-contrib-clean": "0.6.x",
-    "grunt-contrib-compress": "0.12.x",
-    "grunt-contrib-copy": "0.6.x",
-    "grunt-contrib-uglify": "0.6.x",
-    "grunt-notify": "0.3.x",
+    "del": "1.1.x",
     "gulp": "3.8.x",
-    "gulp-clean": "0.3.x",
     "gulp-gzip": "0.0.x",
-    "gulp-jshint": "1.8.x",
-    "gulp-notify": "1.8.x",
+    "gulp-jshint": "1.9.x",
+    "gulp-notify": "2.1.x",
     "gulp-rename": "1.2.x",
     "gulp-uglify": "1.0.x",
-    "gulp-util": "3.0.x"
+    "gulp-util": "3.0.x",
+    "jshint-stylish": "^1.0.0"
   },
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-nodeunit": "~0.4.1"
-  },
-  "license": "TT"
+  "license": "BSD"
 }

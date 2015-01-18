@@ -6,28 +6,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>complex test</title>
     <script>
-		var RimgOptions = {
-			breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x',
-			complete:function(e){
-				console.log('Image(s) is/are loaded.',e);
-			}
-		}
+        var RimgOptions = {
+            breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge 1200w 1x, -huge-retina 1200w 2x',
+            disableLazyLoading:true,//needed to simplify automated testing
+            complete:function(e){
+                console.log('Image(s) is/are loaded.',e);
+            }
+        }
     </script>
-    <script src="rimg.min.js"></script>
+    <script src="js/rimg.min.js"></script>
     <script>
         var item = 0;
 
-		function find(identifier){
-			if(document.querySelector && document.querySelector(identifier)){
-				return document.querySelector(identifier);
-			}else{
-				if(identifier.indexOf('#') != -1){
-					return document.getElementById(identifier);
-				}else{
-					return document.getElementsByClassName(identifier)[0];
-				}
-			}
-		}
+        function find(identifier){
+            if(document.querySelector && document.querySelector(identifier)){
+                return document.querySelector(identifier);
+            }else{
+                if(identifier.indexOf('#') != -1){
+                    return document.getElementById(identifier);
+                }else{
+                    return document.getElementsByClassName(identifier)[0];
+                }
+            }
+        }
 
         function click(){
             var img = document.createElement('img');
@@ -50,18 +51,28 @@
         }
     </script>
     <style type="text/css">
+        body,html{
+            margin:0 auto;
+            padding:0;
+            width: 100%;
+            height: auto;
+        }
+        h1,p{
+            margin:5px;
+        }
         img{
             display: block;
             width: 100%;
             height: auto;
             border: 1px solid #333;
+            vertical-align: top;
         }
 
         img.first{
             width: 100%;
         }
         img.second{
-            width: 70%;
+            width: 69%;
         }
 
         section,article,aside{
@@ -79,23 +90,23 @@
     </style>
 </head>
 <body>
-<h1>Complex welcome</h1>
-<p>A more complex example with nested responsive images. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
-<aside>
-    <h2>Side note</h2>
-    <p>You can do also control deeply nested images like this one below:</p>
-    <section>
-        <article>
-            <h3>Another image</h3>
-            <p>that is deeply nested.</p>
-            <img data-src="images/image2.jpg" class="first"/>
-        </article>
-    </section>
-</aside>
-<img data-src="images/image.jpg" class="second"/>
-<!-- OPTIONAL: -->
-<noscript>
-    <img src="images/image-small.jpg">
-</noscript>
+    <h1>Complex welcome</h1>
+    <p>A more complex example with nested responsive images. <a href="javascript:click();">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
+    <aside>
+        <h2>Side note</h2>
+        <p>You can do also control deeply nested images like this one below:</p>
+        <section>
+            <article>
+                <h3>Another image</h3>
+                <p>that is deeply nested.</p>
+                <img data-src="images/image2.jpg" class="first"/>
+            </article>
+        </section>
+    </aside>
+    <img data-src="images/image.jpg" class="second"/>
+    <!-- OPTIONAL: -->
+    <noscript>
+        <img src="images/image-small.jpg">
+    </noscript>
 </body>
 </html>

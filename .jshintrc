@@ -1,0 +1,8 @@
+{
+  "browser": true,
+  "node": true,
+  "strict":true,
+  "globals": {
+    "casper":false
+  }
+}

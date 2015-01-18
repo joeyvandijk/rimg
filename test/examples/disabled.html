@@ -5,80 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>disabled test</title>
-    <script src="rimg.min.js"></script>
+    <script src="js/rimg.min.js"></script>
     <script>
         window.onload = function(e){
-			//define the breakpoints to use
+            //define the breakpoints to use
             Rimg.configure({
-				breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x',
-				disableIntrospection: true,
-				disableScrolling: true
-			});
+                breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge 1200w 1x, -huge-retina 1200w 2x',
+                disableIntrospection: true,
+                disableScrolling: true
+            });
         }
 
-		//array for resize events
-		var items = [];
+        //array for resize events
+        var items = [];
 
         window.onresize = function(e){
-			var i = 0;
-			var il = items.length;
-			while(i<il){
-				Rimg.execute(find(items[i]));
-				i++;
-			}
+            var i = 0;
+            var il = items.length;
+            while(i<il){
+                Rimg.execute(find(items[i]));
+                i++;
+            }
         }
 
-		function find(identifier){
-			if(document.querySelector && document.querySelector(identifier)){
-				return document.querySelector(identifier);
-			}else{
-				if(identifier.indexOf('#') != -1){
-					return document.getElementById(identifier);
-				}else{
-					return document.getElementsByClassName(identifier)[0];
-				}
-			}
-		}
+        function find(identifier){
+            if(document.querySelector && document.querySelector(identifier)){
+                return document.querySelector(identifier);
+            }else{
+                if(identifier.indexOf('#') != -1){
+                    return document.getElementById(identifier);
+                }else{
+                    return document.getElementsByClassName(identifier)[0];
+                }
+            }
+        }
 
-		function click(item){
-			items.push(item);
-			Rimg.execute(find('img#'+item));
+        function click(item){
+            items.push(item);
+            Rimg.execute(find('img#'+item));
         }
     </script>
     <style type="text/css">
-		html,body{
-			height:100%;
-		}
+        body,html{
+            margin:0 auto;
+            padding:0;
+            height:100%;
+        }
+        h1,p{
+            margin:5px;
+        }
         img{
             display: inline-block;
-            width: 48%;
+            width: 49.2%;
             height: auto !important;
-			min-height:0px;
-            border: 1px solid #333;
+            border: 0px;
         }
-		section{
-			width: 100%;
-		}
+        section{
+            width: 100%;
+        }
 
-		img#first{
-			border: 3px solid red;
-		}
-		img#second{
-			border: 3px solid green;
-		}
-		img#third{
-			border: 3px solid blue;
-		}
+        img#first{
+            border: 2px solid red;
+        }
+        img#second{
+            border: 2px solid green;
+        }
+        img#third{
+            border: 2px solid blue;
+        }
     </style>
 </head>
 <body>
 <h1>A full disabled welcome</h1>
 <p>Just a test where all automation is disabled, so enable the images by interaction.</p>
-<p><a href="javascript:click('first');">Click 1</a> | <a href="javascript:click('second');">Click 2</a> | <a href="javascript:click('third');">Click 3</a></p>
+<p><a href="javascript:click('first');" class="first">Click 1</a> | <a href="javascript:click('second');" class="second">Click 2</a> | <a href="javascript:click('third');" class="third">Click 3</a></p>
 <section>
-	<img data-src="images/image.jpg" id="first"/>
-	<img data-src="images/image.jpg" id="second"/>
-	<img data-src="images/image.jpg" id="third"/>
+    <img data-src="images/image.jpg" id="first"/>
+    <img data-src="images/image.jpg" id="second"/>
+    <img data-src="images/image.jpg" id="third"/>
 </section>
 <!-- OPTIONAL: -->
 <noscript>

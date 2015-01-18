@@ -136,15 +136,16 @@ This is why I provide the option to use `480h` but I do **advise to use the widt
 
 
 # Examples
-See the ```/test``` directory for more information how to use this library.
 To view the examples in the `/test`-directory, clone the project and go to your commandline:
 
-* go the `rimg/test`-directory
-* type `npm install` ([nodejs](http://nodejs.org) needed!)
-* type `node server.js`
-* go to `localhost:8080`
+* run ```npm run check``` to update all npm modules
+* run ```gulp``` to parse ```Rimg.js``` into the correct places
+* run ```npm run server``` to run the test examples on ```http://localhost:8080```
+* run ```npm test``` to run the casperjs tests!
 
-to check the examples locally or see the [demo](http://joeyvandijk.github.io/rimg) online.
+These tasks let you check the examples locally, but you can also see a [demo](http://joeyvandijk.github.io/rimg) online.
+
+Remark: [nodejs](http://nodejs.org) needed!
 
 
 

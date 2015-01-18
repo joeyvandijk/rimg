@@ -4,11 +4,11 @@
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>no lazy loading (scroll) test</title>
+    <title>add test</title>
     <script>
         var RimgOptions = {
             breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge 1200w 1x, -huge-retina 1200w 2x',
-            disableLazyLoading : true
+            disableLazyLoading:true
         }
     </script>
     <script src="js/rimg.min.js"></script>
@@ -59,53 +59,15 @@
             width: 100%;
             height: auto;
             border: 0px;
-            min-height:200px;
             border-top: 1px solid green;
             border-bottom: 1px solid green;
-        }
-        section{
-            width:100%;
-            margin: 0;
-            padding: 0;
-        }
-        section > article{
-            width:100%;
-            font-size:0;/*remove whitespace!*/
-        }
-        article > img{
-            width: 49.5%;
-            border:0;
-            border-left:1px solid #ff6600;
-            display:inline-block;
-        }
-        @media (min-width: 600px) {
-            /*needed while initially the <img> height = 0 which will load all options, while you don't need that*/
-            img{
-                min-height: 60%;
-            }
-            article > img{
-                ming-height:30%;
-            }
         }
     </style>
 </head>
 <body>
-<h1>Hello to the no-lazy-loading example</h1>
-<section>
-    <img data-src="images/image.jpg"/>
-    <img data-src="images/image.jpg"/>
-    <article>
-        <img data-src="images/image.jpg"/>
-        <img data-src="images/image.jpg"/>
-    </article>
-    <img data-src="images/image.jpg"/>
-    <img data-src="images/image.jpg"/>
-    <article>
-        <img data-src="images/image.jpg"/>
-        <img data-src="images/image.jpg"/>
-    </article>
-    <img data-src="images/image.jpg"/>
-</section>
+<h1>Simple welcome</h1>
+<p>Just a simple test with responsive images. <a href="javascript:click();" class="add">Click</a> for another image and see for yourself below this black image. Resize/fullscreen your window to test the switching. <a href="javascript:adjust();">Adjust</a> the first image to see the DOM-mutation mechanism.</p>
+<img data-src="images/image.jpg"/>
 <!-- OPTIONAL: -->
 <noscript>
     <img src="images/image-small.jpg">
