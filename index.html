@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script>var RimgOptions = { breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge w 1x' }</script>
+    <script>var RimgOptions = { breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge 1200w 1x, -huge-retina 1200w 2x' }</script>
     <script src="rimg.min.js"></script>
     <title>Rimg by joeyvandijk</title>
   </head>
@@ -35,20 +35,17 @@
             <h3>RIMG</h3>
             <p>"Responsive-image" (RIMG) supports responsive websites to provide a way to optimize images (like CMS-content) in a simple and performant way. Pure Javascript, no server-side code and 2 lines of code (library + definition). The source of this page shows how the image is being changed by pure Javascript.</p>
             <img data-src="images/image.jpg"/>
-			<h3>Features</h3>
-			<ul>
-				<li>responsive images that respond to <b>retina</b>-screens, <b>browser-resizes</b>, <b>DOMContentLoaded-events</b> and <b>DOM-changes</b></li>
-				<li><b>lazy loading</b> of images: scroll down and Rimg will load the almost visible images (offset option).</li>
-				<li><b>reconfigure</b> after Rimg is loaded/executed by using Rimg.configure({breakpoint:'',...});</li>
-				<li>disable auto introspection, so only manually adjustable by using Rimg.configure(breakpoints); and Rimg.execute(targetElement);</li>
-				<li>only &lt;img&gt; elements with <b>data-src</b> property will be adjusted by Rimg, so implement on one, some or all images.</li>
-				<li>pure frontend ( <b>javascript</b> ) solution and no server-side setup/code is necessary.</li>
-				<li><b>art direction support</b>, respect the chosen filenaming strategy and alter your &lt;img&gt; in any way (square?) and save the file (square?) used in that breakpoint and everything works!</li>
-				<li>independent library, it is <b>NO</b> plugin for jQuery, you don't need to load any other javascript library.</li>
-				<li>supports <b>all file extensions</b> (jpg,png,webp,gif, etc.) while it uses (and not filter) the file extension.</li>
-				<li><b>no user agent sniffing</b> and <b>no cookies</b>, just JS reacting on the environment it is executed in.</li>
-				<li><b>small</b> package with 2,9 kB (gzip) or 8,7 kB (plain)</li>
-			</ul>
+            <h3>Features</h3>
+            <ul>
+                <li>responsive (background) images that respond to <b>retina</b>-screens, <b>browser-resizes</b>, <b>DOMContentLoaded-events</b> and <b>DOM-changes</b></li>
+                <li><b>lazy loading</b> of images: scroll down and Rimg will load the almost visible images (offset option).</li>
+                <li>pure frontend ( <b>javascript</b> ) solution and no server-side setup/code is necessary.</li>
+                <li>independent library, it is <b>NO</b> plugin for jQuery, you don't need to load any other javascript library.</li>
+                <li><b>no user agent sniffing</b> and <b>no cookies</b>, just JS reacting on the environment it is executed in.</li>
+                <li><b>reconfigure</b> after Rimg is loaded/executed by using Rimg.configure({breakpoint:'',...});</li>
+                <li><b>art direction support</b>, respect the chosen filenaming strategy and alter your &lt;img&gt; in any way (square?) and save the file used in that breakpoint and everything works!</li>
+                <li><b>small</b> package with 6,0 kB (gzip) or 8,8 kB (plain)</li>
+            </ul>
             <p></p>
             <h3>More information</h3>
             <ul>
@@ -62,24 +59,24 @@
             </ul>
             <p>Supports: IE8+, Chrome, Safari and Firefox.</p>
             <script>
-	            function addImage(){
-	            	// #container .inner article img
-	            	var holder;
-	            	if(document.querySelector){
-	            		holder = document.querySelector('#container .inner article');
-	            	}else{
-	            		holder = document.getElementById('#container .inner article');
-	            	}
-	            	var img = document.createElement('img');
-	            	img.setAttribute('data-src','images/image.jpg');
-	            	holder.appendChild(img);
-	            }
+                function addImage(){
+                    // #container .inner article img
+                    var holder;
+                    if(document.querySelector){
+                        holder = document.querySelector('#container .inner article');
+                    }else{
+                        holder = document.getElementById('#container .inner article');
+                    }
+                    var img = document.createElement('img');
+                    img.setAttribute('data-src','images/image.jpg');
+                    holder.appendChild(img);
+                }
             </script>
             <h3>An interactive example</h3>
             <p>Not only on initial load or resizes will RIMG update your images, but also when they are added through code (DOM-append). For example click <a href="javascript:addImage();">here</a> to add images below through Javascript.</p>
             <article>
-            	<img data-src="images/image.jpg"/>
-            	<img data-src="images/image.jpg"/>
+                <img data-src="images/image.jpg"/>
+                <img data-src="images/image.jpg"/>
             </article>
         </section>
 
