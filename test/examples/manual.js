@@ -1,4 +1,4 @@
-casper.test.begin('Manual test', 37, function suite(test) {
+casper.test.begin('Manual test', 55, function suite(test) {
     var currentURL = params.url + '/manual.html';
     casper.start(currentURL, function() {
         test.assertTitle('manual test', "page title is okay");
@@ -24,7 +24,6 @@ casper.test.begin('Manual test', 37, function suite(test) {
         casper.checkImage(test,1200,1024,'huge','manual');
         casper.checkImage(test,1201,1024,'huge','manual');
     });
-
 
     //start
     casper.run(function(){

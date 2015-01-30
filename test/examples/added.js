@@ -23,21 +23,25 @@ function addTest(test,wd,hg,imageType,type){
         test.assertExists(element,'image is found');
         test.assertEquals(String(this.getElementAttribute(element,property)),value,'image path is correct');
 
+        //check for console issues
         casper.checkConsoleErrors();
         test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
     });
 
     //initiate new item
-    this.then(function click1(){
+    this.then(function click1() {
+        casper.click('a.add');
+        casper.click('a.add');
         casper.click('a.add');
     });
 
     //check image properties
     this.then(function testProperties2() {
-        value = "images/image-" + imageType + ".jpg,images/image2-" + imageType + ".jpg";
-        test.assertElementCount(element, 2);
+        value = "images/image-" + imageType + ".jpg,images/image2-" + imageType + ".jpg,images/image2-" + imageType + ".jpg,images/image2-" + imageType + ".jpg";
+        test.assertElementCount(element, 4);
         test.assertEquals(String(this.getElementsAttribute(element, property)), value, 'image path #2 is correct');
 
+        //check for console issues
         casper.checkConsoleErrors();
         test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
     });
@@ -49,8 +53,8 @@ function addTest(test,wd,hg,imageType,type){
 
     //check image properties
     this.then(function testProperties3() {
-        value = "images/image-"+imageType+".jpg,images/image2-"+imageType+".jpg,images/image2-"+imageType+".jpg";
-        test.assertElementCount(element,3);
+        value = "images/image-"+imageType+".jpg,images/image2-"+imageType+".jpg,images/image2-"+imageType+".jpg,images/image2-"+imageType+".jpg,images/image2-" + imageType + ".jpg";
+        test.assertElementCount(element,5);
         test.assertEquals(String(this.getElementsAttribute(element,property)),value,'image path #3 is correct');
 
         //check for console issues
@@ -63,7 +67,7 @@ function addTest(test,wd,hg,imageType,type){
     });
 }
 
-casper.test.begin('Add test', 181, function suite(test) {
+casper.test.begin('Added test', 181, function suite(test) {
     var currentURL = params.url + '/add.html';
     casper.start(currentURL, function() {
         test.assertTitle('add test', "page title is okay");

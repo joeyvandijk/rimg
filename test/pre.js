@@ -3,23 +3,77 @@ var params = {
     url:'http://localhost:8080'
 };
 
+function failed(msg,trace){
+    //check if it is just a warning
+    if(msg.indexOf('Rimg:') === -1 &&
+        msg.indexOf('Rimg.execute():') === -1 &&
+        msg.indexOf('Rimg.initialize():') === -1 &&
+        msg.indexOf('(remark) Rimg') === -1
+    ){
+        //real issue, so show that test fails
+        this.issues.push(msg);
+    }
+}
+
+casper.addConsoleListener = function(){
+    var self = this;
+    this.issues = [];//onto the casper object for reference
+    self.on("page.error", failed);
+    self.on("remote.message", failed);
+};
+
+casper.checkConsoleErrors = function(ignore){
+    var i = 0;
+    var il = this.issues.length;
+    var g,gl,fnd;
+    var list = [];
+    while(i<il){
+        fnd = false;
+        if(ignore){
+            g = 0;
+            gl = ignore.length;
+            inner:while(g<gl){
+                if(this.issues[i].indexOf(ignore[g]) !== -1){
+                    fnd = true;
+                    break inner;
+                }
+                g++;
+            }
+        }
+        if(!fnd){
+            list.push(this.issues[i]);
+        }
+        i++;
+    }
+    if(list.length){
+        this.echo('======= CONSOLE ERRORS =======','WARNING');
+        this.echo(list.join(',\n'),'WARNING');
+        this.echo('======= END CONSOLE ERRORS =======','WARNING');
+    }
+    //overwrite issues list due to filtered messages (if available)
+    casper.issues = list;
+};
+
 //check the only image on the page
 casper.checkImage = function(test,wd,hg,imageType,type){
     //change viewport size
-    this.then(function() {
-        casper.viewport(wd, hg,function(){
+    this.then(function initiateViewport() {
+        casper.viewport(wd, hg,function viewportResponse(){
             test.comment('Window resolution is ' + this.evaluate(function() {
                 return window.innerWidth+'x'+window.innerHeight;
             }), 'DEBUG');
         });
     });
-    this.then(function(){
+
+    this.then(function reload(){
+        casper.addConsoleListener();
+
+        //reload the page
         casper.reload();
     });
 
-
     //check image properties
-    this.then(function() {
+    this.then(function testProperties() {
         var property = 'src';
         var element = 'img';
         var value = "images/image-"+imageType+".jpg";
@@ -34,25 +88,36 @@ casper.checkImage = function(test,wd,hg,imageType,type){
         }
         test.assertExists(element,'image is found');
         test.assertEquals(String(this.getElementAttribute(element,property)),value,'image path is correct');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
+
+        //remove listeners
+        casper.removeListener('page.error', failed);
+        casper.removeListener('remote.message', failed);
     });
 };
 
 //determine if the 3 SVG situations are correct
 casper.checkSVG = function(test,wd,hg,imageType){
     //change viewport size
-    this.then(function() {
-        casper.viewport(wd, hg,function(){
+    this.then(function initiateViewport() {
+        casper.viewport(wd, hg,function viewportResponse(){
             test.comment('Window resolution is ' + this.evaluate(function() {
                 return window.innerWidth+'x'+window.innerHeight;
             }), 'DEBUG');
         });
     });
-    this.then(function(){
+    this.then(function reload(){
+        casper.addConsoleListener();
+
         casper.reload();
     });
 
+
     //check image properties
-    this.then(function() {
+    this.then(function testProperties() {
         var property = 'src';
         var element = 'img';
         var value = "images/image-"+imageType+".jpg";
@@ -80,6 +145,14 @@ casper.checkSVG = function(test,wd,hg,imageType){
             }
             i++;
         }
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
+
+        //remove listeners
+        casper.removeListener('page.error', failed);
+        casper.removeListener('remote.message', failed);
     });
 };
 

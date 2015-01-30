@@ -5,10 +5,10 @@
         console = {
             log: function(){},
             error: function(){}
-        }
+        };
     }
 
-    ////////// IE8 /////////////
+    ////////// IE8 SUPPORT /////////////
     if (!Object.create) {
         Object.create = (function(){
             function F(){}
@@ -19,8 +19,8 @@
                 }
                 F.prototype = o;
                 return new F();
-            }
-        })()
+            };
+        })();
     }
     if (!Function.prototype.bind) {
         Function.prototype.bind = function (oThis) {
@@ -33,10 +33,7 @@
                 fToBind = this,
                 fNOP = function () {},
                 fBound = function () {
-                    return fToBind.apply(this instanceof fNOP && oThis
-                        ? this
-                        : oThis,
-                        aArgs.concat(Array.prototype.slice.call(arguments)));
+                    return fToBind.apply(this instanceof fNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
                 };
 
             fNOP.prototype = this.prototype;
@@ -45,7 +42,7 @@
             return fBound;
         };
     }
-    ////////// END IE8 /////////////
+    ////////// END IE8 SUPPORT /////////////
 
     var Rimg = function() {
         var hidden = {
@@ -67,6 +64,36 @@
             hidden.isIE8 = true;
         }
 
+        function getSrc(value){
+            var ratios = this.pixelRatio.length;
+            if(ratios === 0){
+                hidden.status = 'error';
+                console.error('Rimg: missing a pixelRatio definition, check the documentation.');
+                return '';
+            }else if(ratios === 1){
+                return this.src[0];
+            }else if(ratios === 2){
+                if(value <= 1){
+                    return this.src[0];
+                }else{
+                    return this.src[1];
+                }
+            }else{
+                //determine which pixelRatio matches most closely with current device pixel ratio.
+                var s = 0;
+                var sl = this.pixelRatio.length;
+                while(s<sl){
+                    //possible that pixelRatio is 1.5 or 2.25
+                    if(value === this.pixelRatio[s] || Math.round(value) === this.pixelRatio[s]){
+                        return this.src[s];
+                    }
+                    s++;
+                }
+                //use last reference
+                return this.src[ratios-1];
+            }
+        }
+
         function parseBreakpoints(value){
             //custom: (once) -small 640w 1x, -retina-small 640w 2x, -medium 1280w 1x, -retina-medium 1280w 2x
             //custom: (per image) data-src="image.jpg"
@@ -86,38 +113,11 @@
                     var bpDefinition = {
                         src: [],
                         width: -1,
-                        height: -1,
                         pixelRatio: [],
-                        getSrc: function(value){
-                            var ratios = this.pixelRatio.length;
-                            if(ratios === 0){
-                                hidden.status = 'error';
-                                console.error('Rimg: missing a pixelRatio definition, check the documentation.');
-                                return '';
-                            }else if(ratios === 1){
-                                return this.src[0];
-                            }else if(ratios === 2){
-                                if(value <= 1){
-                                    return this.src[0];
-                                }else{
-                                    return this.src[1];
-                                }
-                            }else{
-                                //determine which pixelRatio matches most closely with current device pixel ratio.
-                                var s = 0;
-                                var sl = this.pixelRatio.length;
-                                while(s<sl){
-                                    //possible that pixelRatio is 1.5 or 2.25
-                                    if(value === this.pixelRatio[s] || Math.round(value) === this.pixelRatio[s]){
-                                        return this.src[s];
-                                    }
-                                    s++;
-                                }
-                                //use last reference
-                                return this.src[ratios-1];
-                            }
-                        }
+                        getSrc: getSrc
                     };
+
+                    //find border definitions
                     var parts = bp.split(' ');
                     var p = 0;
                     var pl = parts.length;
@@ -128,8 +128,6 @@
                         }else{
                             if(part.match(/^[0-9]{0,4}w/gi) !== null){
                                 bpDefinition.width = Number(part.substr(0,part.length-1));
-                            }else if(part.match(/^[0-9]{0,4}h/gi) !== null){
-                                bpDefinition.height = Number(part.substr(0,part.length-1));
                             }else if(part.match(/[0-9]{1}x$/gi) !== null){
                                 //only match 1x, 2x at the end, so paths can also have 320x in their name
                                 bpDefinition.pixelRatio.push(Number(part.substr(0,part.length-1)));
@@ -146,7 +144,7 @@
                     var found = false;
                     while(d<dl){
                         var def = definition[d];
-                        if((def.width === bpDefinition.width  && def.width !== -1) || (def.height === bpDefinition.height && def.height !== -1)){
+                        if((def.width === bpDefinition.width  && def.width !== -1)){
                             //a match
                             def.pixelRatio.push(bpDefinition.pixelRatio[0]);
                             def.src.push(bpDefinition.src[0]);
@@ -177,6 +175,222 @@
             }
         }
 
+        function getType(data,type,value){
+            //check the asset to determine what kind of metadata needs to be set
+            var src;
+            var property = '';
+            if(type === 'img') {
+                //default <img>
+                property = 'data-src';
+            }else {
+                property = 'data-background-image';
+            }
+            src = value.getAttribute(property);
+            if(src === null){
+                //no data-src / data-background-image set, so ignore
+                data.ignore = true;
+            }else{
+                if((data.path !== undefined && data.path !== src) ||
+                    data.path === undefined
+                ){
+                    //not yet set or different
+                    data.path = src;
+                    if(property === 'data-background-image') {
+                        data.background = true;
+                    }else{
+                       data.background = false;
+                    }
+                    data.extension = getExtension(src);
+                }
+            }
+
+            //ignore incompatible formats like SVG and GIF
+            if(data.extension === 'gif' ||
+               data.extension === 'svg'
+            ){
+                //you do not need to alter this node, so add meta-information to skip alteration of the DOM
+                data.ignore = true;
+            }else if(data.ignore === undefined){
+                data.ignore = false;
+            }
+        }
+
+        function exists(item){
+            //check if entry exists already
+            var l = 0;
+            var ll = hidden.images.length;
+            var found = false;
+            while(l<ll){
+                if(hidden.images[l].target === item){
+                    found = true;
+                    break;
+                }
+                l++;
+            }
+            if(found){
+                return hidden.images[l];
+            }else{
+                return null;
+            }
+        }
+
+        function find(target){
+            //find all images in the DOM
+            var items = document.querySelectorAll('img');
+            var i = 0;
+            var il = items.length;
+            var item,obj,reference;
+            while(i<il){
+                item = items[i];
+                //check if entry exists already
+                reference = exists(item);
+                if(reference === null){
+                    //new item, so add with meta-information to speed up switching
+                    obj = {
+                        target: item,
+                        enabled: !hidden.disableIntrospection //ensure a property exists to check during update()
+                    };
+                    getType(obj,'img',item);
+                    hidden.images.push(obj);
+                    reference = obj;
+                }else{
+                    //found, but check if properties are up-to-date
+                    getType(reference,'img',item);
+                }
+
+                //if disableIntrospection=true, only update/show the one that is enabled
+                if(target && reference.target === target && hidden.disableIntrospection){
+                    reference.enabled = true;
+                }
+                i++;
+            }
+
+            //find all background images
+            items = document.querySelectorAll('[data-background-image]');
+            i = 0;
+            il = items.length;
+            while(i<il){
+                item = items[i];
+                //check if entry exists already
+                reference = exists(item);
+                if(reference === null){
+                    //new item, so add with meta-information to speed up switching
+                    obj = {
+                        target: item,
+                        enabled: !hidden.disableIntrospection //ensure a property exists to check during update()
+                    };
+                    getType(obj,'background',item);
+                    hidden.images.push(obj);
+                    reference = obj;
+                }else{
+                    //found, but check if properties are up-to-date
+                    getType(reference,'background',item);
+                }
+
+                //if disableIntrospection=true, only update/show the one that is enabled
+                if(target && reference.target === target && hidden.disableIntrospection){
+                    reference.enabled = true;
+                }
+                i++;
+            }
+
+            update();
+        }
+
+        function update(){
+            //update the DOM-entries with their corresponding src-property
+            var i = 0;
+            var il = hidden.images.length;
+            var visible;
+            var ratio = window.devicePixelRatio || 1;
+            while(i<il){
+                var item = hidden.images[i];
+                if(!item.ignore && item.enabled){
+                    //check if image / container needs to be updated
+                    visible = true;
+                    if(!hidden.disableLazyLoading){
+                        //calculate bounding rect & check if in browser window range
+                        var rect = item.target.getBoundingClientRect();
+                        visible = !(
+                        ((rect.top + rect.height) < (-hidden.offset.y)) ||
+                        (rect.top > (-hidden.offset.y + hidden.resizeDimensions.height + hidden.offset.y)) ||
+                        ((rect.left + rect.width) < -hidden.offset.x) ||
+                        (rect.left > (-hidden.offset.x + hidden.resizeDimensions.width + hidden.offset.x))
+                        );
+                    }
+
+                    //change src property when appropriate
+                    var currentPath;
+                    if(item.background){
+                        currentPath = item.target.getAttribute('data-background-image');
+                    }else{
+                        currentPath = item.target.getAttribute('data-src');
+                    }
+                    if(currentPath !== null && currentPath !== '' && visible){
+                        //only adjust images / containers with data-xxx properties
+                        var file = currentPath.substr(0,currentPath.lastIndexOf('.'));
+                        var extension = item.extension;
+                        var size = {x:item.target.width};
+                        var property;
+                        //backgroundImage has no maxWidth, but just width/height so use it for backgroundImage +
+                        //firefox presents width/height with 0, so check getComputedStyle if necessary:
+                        if(item.target.width === 0 || item.target.width === undefined){
+                            if(item.background){
+                                property = 'width';
+                            }else{
+                                property = 'maxWidth';
+                            }
+                            size.x = window.getComputedStyle(item.target,null)[property];
+                            size.x = size.x.replace('px','');
+                            size.x = Number(size.x);
+                        }
+                        var b = 0;
+                        var bl = hidden.breakpoints.length;
+                        var breakpoint = undefined;
+                        while(b<bl){
+                            var bp = hidden.breakpoints[b];
+                            var wd = size.x;
+                            if(wd > bp.width) {
+                                breakpoint = bp;
+                            }else if(wd == bp.width){
+                                breakpoint = bp;
+                                break;
+                            }else if(wd < bp.width){
+                                //border found
+                                break;
+                            }
+                            b++;
+                        }
+                        if(breakpoint === undefined){
+                            //use first
+                            breakpoint = hidden.breakpoints[0];
+                        }
+
+                        //all information gathered, set new src-property
+                        var changed = false;
+                        var newURL = file+breakpoint.getSrc(ratio)+'.'+extension;
+                        if(!item.background && item.target.getAttribute('src') !== newURL){
+                            //set the appropriate version of the image
+                            item.target.setAttribute('src',newURL);
+                            changed = true;
+                        }else if(item.background && item.target.style.backgroundImage.indexOf(newURL) === -1){
+                            item.target.style.backgroundImage = 'url('+newURL+')';
+                            changed = true;
+                        }
+                        if(changed){
+                            //the source image has changed, so check the load to execute final complete function
+                            hidden.imageEvents.changed++;
+
+                            event('add','load',imageEvent,item.target);
+                            event('add','error',imageEvent,item.target);
+                        }
+                    }
+                    //not visible so ignore further actions
+                }
+                i++;
+            }
+        }
+
         //discover initial settings
         if(typeof window.RimgOptions !== 'undefined'){
             //validate
@@ -190,20 +404,22 @@
             if(window.RimgOptions.disableLazyLoading === true){
                 hidden.disableLazyLoading = true;
             }
+            //do not set !== null while it halts execution!
             if(window.RimgOptions.offset != null && typeof window.RimgOptions.offset.x === 'number' && typeof window.RimgOptions.offset.y === 'number'){
                 hidden.offset.x = window.RimgOptions.offset.x;
                 hidden.offset.y = window.RimgOptions.offset.y;
             }
-            if(window.RimgOptions.complete != null && typeof window.RimgOptions.complete === 'function'){
+            if(window.RimgOptions.complete !== null && typeof window.RimgOptions.complete === 'function'){
                 hidden.imagesLoaded = window.RimgOptions.complete;
             }
             //clean reference
             window.RimgOptions = undefined;
         }else{
-            console.log('(remark) Rimg: no breakpoints defined (yet), check the documentation or manually adjust it.');
+            console.error('(remark) Rimg: no breakpoints defined (yet), check the documentation or manually adjust it.');
         }
 
         function imageEvent(e){
+            //listen for all images to be loaded, to execute "complete"-log
             hidden.imageEvents.changed--;
             if(e.type === 'error'){
                 hidden.imageEvents.errors++;
@@ -215,10 +431,15 @@
                     hidden.imagesLoaded(hidden.imageEvents.errors > 0 ? true : false);
                 }
             }
+            //remove listeners to minimize memory footprint / leakages
+            if(e.path && e.path.length > 0){
+                event('remove','load',imageEvent, e.path[0]);
+                event('remove','error',imageEvent, e.path[0]);
+            }
         }
 
         function event(type,evt,func,target){
-            //add/remote event listeners
+            //add/remote event listeners due to IE8 support
             if(target === undefined){
                 target = document;
             }
@@ -248,156 +469,11 @@
         }
 
         function getExtension(value){
+            //find the extension of the value (URL)
             if(value){
                 return value.substr(value.lastIndexOf('.') + 1).toLowerCase();
             }
             return null;
-        }
-
-        function addImage(value){
-            //add an image but check if it already is saved
-            var i = 0;
-            var il = hidden.images.length;
-            var found = false;
-            while(i<il){
-                if(hidden.images[i] === value){
-                    found = true;
-                    break;
-                }
-                i++;
-            }
-            if(!found){
-                var data;
-                if(value.nodeName.toLowerCase() === 'img'){
-                    //default <img>
-                    data = value.getAttribute('data-src');
-                }else{
-                    data = value.getAttribute('data-background-image');
-                }
-
-                var extension = getExtension(data);
-                if(extension && extension != 'svg' && data != null && data != ''){
-                    //ignore svg images (are already scalable)
-                    hidden.images.push(value);
-                }
-            }
-        }
-
-        function adjust(value){
-            var visible = true;
-            if(!hidden.disableLazyLoading){
-                //calculate bounding rect & check if in browser window range
-                var rect = value.getBoundingClientRect();
-                visible = !(
-                    ((rect.top + rect.height) < (-hidden.offset.y)) ||
-                    (rect.top > (-hidden.offset.y + hidden.resizeDimensions.height + hidden.offset.y)) ||
-                    ((rect.left + rect.width) < -hidden.offset.x) ||
-                    (rect.left > (-hidden.offset.x + hidden.resizeDimensions.width + hidden.offset.x))
-                );
-            }
-            //change src property when appropriate
-            var ratio = window.devicePixelRatio || 1;
-            var data;
-            var type;
-            if(value.nodeName.toLowerCase() === 'img'){
-                data = value.getAttribute('data-src');
-                type = 'image';
-            }else{
-                data = value.getAttribute('data-background-image');
-                type = 'background';
-            }
-            if(data !== null && data != '' && visible){
-                //only adjust images with data-src property
-                var file = data.substr(0,data.lastIndexOf('.'));
-                var extension = getExtension(data);
-                var size = {x:value.width,y:value.height};
-                var property;
-                //backgroundImage has no maxWidth, but just width/height so use it for backgroundImage +
-                //firefox presents width/height with 0, so check getComputedStyle if necessary:
-                if(value.width === 0 || value.width === undefined){
-                    if(type === 'image'){
-                        property = 'maxWidth';
-                    }else{
-                        property = 'width';
-                    }
-                    size.x = window.getComputedStyle(value,null)[property];
-                    size.x = size.x.replace('px','');
-                    size.x = Number(size.x);
-                }
-                if(value.height === 0){
-                    if(type === 'image'){
-                        property = 'maxHeight';
-                    }else{
-                        property = 'height';
-                    }
-                    size.y = window.getComputedStyle(value,null)[property];
-                    size.y = size.y.replace('px','');
-                    size.y = Number(size.y);
-                }
-                var i = 0;
-                var il = hidden.breakpoints.length;
-                var breakpoint;
-                while(i<il){
-                    var bp = hidden.breakpoints[i];
-                    var wd = size.x;
-                    //TODO needed or height not important? = not needed when window (due to debugging) is smaller ....or clientWidth bug? (orientation?)
-                    if(size.x < size.y){
-//                        wd = size.y;
-                    }
-                    if(wd <= bp.width){
-                        breakpoint = bp;
-                        break;
-                    }
-                    i++;
-                }
-                if(breakpoint === undefined){
-                    //use latest
-                    breakpoint = hidden.breakpoints[hidden.breakpoints.length-1];
-                }
-                var changed = false;
-                var newURL = file+breakpoint.getSrc(ratio)+'.'+extension;
-                if(type === 'image' && value.getAttribute('src') !== newURL && extension != 'svg'){
-                    //set the appropriate version of the image
-                    value.setAttribute('src',newURL);
-                    changed = true;
-                }else if(type === 'background' && value.style.backgroundImage.indexOf(newURL) === -1 && extension != 'svg'){
-                    value.style.backgroundImage = 'url('+newURL+')';
-                }
-
-                if(changed){
-                    //the source image has changed, so check the load to execute final complete function
-                    hidden.imageEvents.changed++;
-
-                    event('add','load',imageEvent,value);
-                    event('add','error',imageEvent,value);
-                }
-            }
-        }
-
-        function inspect(value){
-            //check node itself if it is an image or has children
-            if(value.nodeName.toLowerCase() === 'img' || value.hasAttribute('data-background-image')){
-                addImage(value);
-                adjust(value);
-            }else{
-                //walk through all node children until you find img files
-                var i = 0;
-                var il = value.children.length;
-                while(i<il){
-                    var item = value.children[i];
-                    inspect(item);
-                    i++;
-                }
-            }
-        }
-
-        function adjustImages(){
-            var i = 0;
-            var il = hidden.images.length;
-            while(i<il){
-                adjust(hidden.images[i]);
-                i++;
-            }
         }
 
         function checkDimensions(){
@@ -425,7 +501,7 @@
 
             if(checkDimensions()){
                 //adjust image sources, if necessary
-                adjustImages();
+                update();
             }
 
             //outside to ensure correct timing difference
@@ -438,7 +514,7 @@
         }
 
         return {
-            version: '1.9.1',
+            version: '2.0.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -451,59 +527,12 @@
                     console.log('(remark) Rimg.execute(): no breakpoints defined (yet), probably because of manual control.');
                     return;
                 }
-                if(target.nodeName === '#document'){
-                    //clean images array, due to reset
-                    hidden.images.splice(0,hidden.images.length);
 
-                    if(target.childNodes.length > 1){
-                        //find html node
-                        var html;
-                        if(target.childNodes[1].nodeName !== 'HTML'){
-                            //needed to skip HTML comments which are detected as nodes
-                            var i = 0;
-                            var il = target.childNodes.length;
-                            while(i<il){
-                                if(target.childNodes[i].nodeName === 'HTML'){
-                                    html = target.childNodes[i];
-                                    break;
-                                }
-                                i++;
-                            }
-                        }else{
-                            //second option is <html>
-                            html = target.childNodes[1];
-                        }
-                        //find body node
-                        if(html.childNodes[1].nodeName !== 'BODY'){
-                            var i = 0;
-                            var il = html.childNodes.length;
-                            while(i<il){
-                                if(html.childNodes[i].nodeName === 'BODY'){
-                                    inspect(html.childNodes[i]);
-                                    break;
-                                }
-                                i++;
-                            }
-                        }else{
-                            //second option is <body>
-                            inspect(html.childNodes[1]);
-                        }
-                    }else{
-                        console.error('Rimg.execute(): not a valid DOM representation, check your code.');
-                    }
-                }else{
-                    if(target !== undefined && target.nodeName !== undefined && target.nodeName.toLowerCase() === 'img'){
-                        //direct reference
-                        inspect(target);
-                    }else if(target[0] !== undefined && target[0].nodeName.toLowerCase() === 'img'){
-                        //child reference (after add)
-                        inspect(target[0]);
-                    }else{
-                        //no <img> element found
-                    }
-                }
+                //only need
+                find(target);
             },
             configure: function(value){
+                //provide new configuration to adapt to
                 if(!(value instanceof Object)){
                     console.error('Rimg: your definition is not an object, check the documentation.');
                     return;
@@ -520,7 +549,7 @@
                 if(value.disableLazyLoading === true){
                     hidden.disableLazyLoading = true;
                 }
-                if(value.offset != null && typeof value.offset.x === 'number' && typeof value.offset.y === 'number'){
+                if(value.offset !== null && typeof value.offset.x === 'number' && typeof value.offset.y === 'number'){
                     hidden.offset.x = value.offset.x;
                     hidden.offset.y = value.offset.y;
                 }
@@ -534,6 +563,7 @@
                 }
             },
             resized: function(e){
+                //resize-event captured, determine if resize-action needs to be called
                 if(hidden.status !== 'ready'){
                     //not available anymore
                     return;
@@ -544,22 +574,23 @@
                     clearTimeout(hidden.resizeInfo.wait);
                 }
 
-                //TODO (clear)timeout more useful?
                 if(hidden.resizeInfo.time === null || new Date().getTime() - hidden.resizeInfo.time > 1000){
                     //first time || long ago
                     resize.bind(this)();
                 }else{
-                    //wait 100ms to ensure performant and not a blocking script execution
+                    //wait 100ms to ensure performant and not a "blocking" script execution
                     hidden.resizeInfo.wait = setTimeout(resize.bind(this),100);
                 }
             },
             scrolled: function(e){
+                //scroll-event captured, update if possible
                 if(!hidden.disableLazyLoading){
                     //execute directly for best performance / feel = "skip" will be done at adjustment check
-                    adjustImages();
+                    update();
                 }
             },
             loaded: function(e){
+                //DOM is loaded, find metadata
                 if(hidden.status !== 'progress'){
                     //not available anymore
                     return;
@@ -577,10 +608,7 @@
                 //initial DOM checkup
                 if(!hidden.disableIntrospection){
                     // DOM content loaded
-                    if (hidden.observer === null) {
-                        //check the whole page before any changes happen
-                        this.execute(document);
-                    }else{
+                    if (hidden.observer !== null) {
                         hidden.observer.observe(document.body, {
                             attributes: true,
                             childList: true,
@@ -588,9 +616,9 @@
                             subtree: true,
                             attributeFilter: ['data-src']
                         });
-                        //check full DOM
-                        this.execute(document);
                     }
+                    //check full DOM
+                    this.execute(document);
 
                     //listen for browser resize
                     event('add','resize',this.resized.bind(this));
@@ -616,6 +644,7 @@
                 }
             },
             initialize: function(){
+                //first action to determine how to proceed
                 if(hidden.status !== 'init'){
                     if(hidden.status !== 'error'){
                         console.error('Rimg.initialize(): Already initialized. No forced initialization supported, check your code.');
@@ -629,20 +658,13 @@
                 if (MutationObserver === undefined || hidden.isIE8) {
                     event('add','DOMAttrModified',function(e){
                         //DOM attribute modified, not supported in webkit (will use MutationObserver there)
-                        base.execute(e.target);
+                        find();
                     });
-                    //TODO issues with IE9 - http://help.dottoro.com/ljmcxjla.php
                     event('add','DOMNodeInserted',nodeInserted.bind(base));
                     //ignore DOMSubtreeModified while DOMAttrModified is used, while performance does not allow 2 listeners
                 }else{
                     hidden.observer = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            if(mutation.addedNodes.length > 0){
-                                base.execute(mutation.addedNodes);
-                            }else if(mutation.attributeName === 'data-src'){
-                                base.execute(mutation.target);
-                            }
-                        });
+                        find();
                     });
                 }
                 hidden.status = 'progress';

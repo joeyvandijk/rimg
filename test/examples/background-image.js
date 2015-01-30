@@ -1,4 +1,4 @@
-casper.test.begin('Background-image test', 37, function suite(test) {
+casper.test.begin('Background-image test', 55, function suite(test) {
     var currentURL = params.url + '/background-image.html';
     casper.start(currentURL, function() {
         test.assertTitle('background-image test', "page title is okay");

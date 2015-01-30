@@ -7,12 +7,14 @@ function nolazyloadingTest(test,wd,hg,imageType,articleImageType){
             }), 'DEBUG');
         });
     });
-    this.then(function(){
+    this.then(function reload(){
+        casper.addConsoleListener();
+
         casper.reload();
     });
 
     //check image properties
-    this.then(function() {
+    this.then(function testProperties() {
         //check images & article images
         var property = 'src';
         var value;
@@ -27,6 +29,11 @@ function nolazyloadingTest(test,wd,hg,imageType,articleImageType){
         test.assertElementCount(element,5);
         test.assertExists(element,'images are found');
         test.assertEquals(this.getElementsAttribute(element,property),value,'section images okay');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
+
         element = 'article > img';
         value = [
             'images/image-'+articleImageType+'.jpg',
@@ -37,10 +44,18 @@ function nolazyloadingTest(test,wd,hg,imageType,articleImageType){
         test.assertElementCount(element,4);
         test.assertExists(element,'article images are found');
         test.assertEquals(this.getElementsAttribute(element,property),value,'article images okay');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
+
+        //remove listeners
+        casper.removeListener('page.error', failed);
+        casper.removeListener('remote.message', failed);
     });
 };
 
-casper.test.begin('No lazy loading test', 109, function suite(test) {
+casper.test.begin('No lazy loading test', 145, function suite(test) {
     var currentURL = params.url + '/nolazyloading.html';
     casper.start(currentURL, function() {
         test.assertTitle('no lazy loading (scroll) test', "page title is okay");

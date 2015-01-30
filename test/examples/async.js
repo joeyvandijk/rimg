@@ -1,4 +1,4 @@
-casper.test.begin('Async test', 37, function suite(test) {
+casper.test.begin('Async test', 55, function suite(test) {
     var currentURL = params.url + '/async.html';
     casper.start(currentURL, function() {
         test.assertTitle('async test', "page title is okay");

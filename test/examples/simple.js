@@ -1,4 +1,4 @@
-casper.test.begin('Simple test', 37, function suite(test) {
+casper.test.begin('Simple test', 55, function suite(test) {
     var currentURL = params.url + '/simple.html';
     casper.start(currentURL, function() {
         test.assertTitle('simple test', "page title is okay");

@@ -58,27 +58,29 @@
             display: inline-block;
             width: 49.2%;
             height: auto !important;
-            border: 0px;
+            border: 0;
         }
         section{
             width: 100%;
         }
 
         img#first{
-            border: 2px solid red;
+            border-top: 2px solid red;
+            border-bottom: 2px solid red;
         }
         img#second{
-            border: 2px solid green;
+            border-top: 2px solid green;
+            border-bottom: 2px solid green;
         }
         img#third{
-            border: 2px solid blue;
+            border-top: 2px solid blue;
+            border-bottom: 2px solid blue;
         }
     </style>
 </head>
 <body>
 <h1>A full disabled welcome</h1>
-<p>Just a test where all automation is disabled, so enable the images by interaction.</p>
-<p><a href="javascript:click('first');" class="first">Click 1</a> | <a href="javascript:click('second');" class="second">Click 2</a> | <a href="javascript:click('third');" class="third">Click 3</a></p>
+<p>Just a test where all automation is disabled, so enable the images by interaction. : <a href="javascript:click('first');" class="first">Click 1</a> | <a href="javascript:click('second');" class="second">Click 2</a> | <a href="javascript:click('third');" class="third">Click 3</a></p>
 <section>
     <img data-src="images/image.jpg" id="first"/>
     <img data-src="images/image.jpg" id="second"/>

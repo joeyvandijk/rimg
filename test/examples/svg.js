@@ -1,4 +1,4 @@
-casper.test.begin('Simple test', 73, function suite(test) {
+casper.test.begin('Simple test', 91, function suite(test) {
     var currentURL = params.url + '/svg.html';
     casper.start(currentURL, function() {
         test.assertTitle('svg test', "page title is okay");

@@ -5,22 +5,26 @@
 It is based on the idea that when the DOM is loaded, it will traverse the DOM, looking for ```<img>```-nodes, and alter the ```src```-property. You can also [manually](https://github.com/joeyvandijk/rimg/tree/master#api) execute this task.
 Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoints. Just provide the image basename and let Rimg do the adjustments.
 
-See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg/tree/master#breakpoints) how the breakpoints are used.
-Current version: **v1.9.1**.
+See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg#breakpoints) how the breakpoints are used.
+Current version: **v2.0.0**.
 
 ## Features
-* responsive images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
+* responsive (background) images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
 * **lazy loading of images**: scroll down and Rimg will load the almost visible images (offset option).
+* pure frontend ( **javascript** ) solution and no server-side setup/code is necessary.
+* independent library, it is **NO** plugin for jQuery, you don't need to load any other javascript library.
+* **no user agent sniffing** and **no cookies** just JS reacting on the environment it is executed in.
 * **reconfigure** after Rimg is loaded/executed by using ```Rimg.configure({breakpoint:'',...});```
-* **disable** auto introspection, so only **manually** adjustable by using ```Rimg.configure(breakpoints);``` and ```Rimg.execute(targetElement);```
+* **art direction support**, respect the chosen filenaming strategy and alter your ```<img>``` in any way (square?) and save the file used in that breakpoint and everything works!
+* **small** package : 6,0 kB (gzip) or 8,8 kB (plain)
+
+
+### Nice to know features
 * only ```<img>``` elements with a ```data-src``` property will be adjusted by Rimg, so implement on one, some or all images.
 * only elements with a ```data-background-image``` property will be adjusted by Rimg, so implement on one, some or all images. This is needed for images that will use **```background-size: cover```**.
-* pure frontend ( **javascript** ) solution and no server-side setup/code is necessary.
-* **art direction support**, respect the chosen filenaming strategy and alter your ```<img>``` in any way (square?) and save the file (square?) used in that breakpoint and everything works!
-* independent library, it is **NO** plugin for jQuery, you don't need to load any other javascript library.
-* supports **all file extensions** (```jpg```,```png```,```webp```,```gif```, etc.) while it uses (and not filter) the file extension. ```svg``` files are ignored.
-* **no user agent sniffing** and **no cookies** just JS reacting on the environment it is executed in.
-* **small** package : 3,1 kB (gzip) or 9,2 kB (plain)
+* supports **all file extensions** (```jpg```,```png```,```webp```,etc.) while it uses (and does not filter) the file extension. ```svg``` and ```gif``` files are ignored.
+* **disable** auto introspection, so only **manually** adjustable by using ```Rimg.configure(breakpoints);``` and ```Rimg.execute(targetElement);```
+
 
 # Getting Started
 * Define custom filenaming strategy, like `-micro`,`-tiny`, `-small`, `-medium`, `-regular`, `-large` and `-huge` to have a clear distinction between all breakpoint-steps.
@@ -32,7 +36,7 @@ var RimgOptions = { breakpoint:'-micro 160w 1x, -micro-retina 160w 2x,
 -medium 600w 1x, -medium-retina 600w 2x,
 -regular 768w 1x, -regular-retina 768w 2x,
 -large 1024w 1x, -large-retina 1024w 2x,
--huge w 1x'};
+-huge 1200w 1x, -huge-retina 1200w 2x'};
 ```
 
 before you load the minified version of Rimg.
@@ -48,7 +52,7 @@ var RimgOptions = { breakpoint:'-tiny 320w 1x, -tiny-retina 320w 2x,
 	-medium 600w 1x, -medium-retina 600w 2x,
 	-regular 768w 1x, -regular-retina 768w 2x,
 	-large 1024w 1x, -large-retina 1024w 2x,
-	-huge w 1x'};
+	-huge 1200w 1x, -huge-retina 1200w 2x'};
 </script>
 <script src="rimg.min.js"></script>
 </head>
@@ -56,12 +60,12 @@ var RimgOptions = { breakpoint:'-tiny 320w 1x, -tiny-retina 320w 2x,
    <img data-src="image.jpg"/>
 ```
 
-Now you have a working setup that will check your DOM-element dimensions to determine which image-file suits best to show in your HTML page.
+Now you have a working setup that will check your DOM-element dimensions to determine which image-file suits best to show in the HTML page.
 
 ## Dependencies
 * A clear **filenaming strategy** that you will use with all your image-filenames you use.
 * Use **CSS** or ```style=""``` to adjust ```<img>``` dimensions and Rimg will only listen to that values.
-* If you use lazy loading (which is default on), please be advised that you need to define the **min-height** / **height** of the images. So when scrolling Rimg will know what images to load, while during initialization it is not clear what height the image has. Use **CSS** like mentioned above to let Rimg know when to initiate the load action of the next image.
+* If you use lazy loading (which is default on), please be advised that you want to define the **min-height** / **height** of the images. So when scrolling Rimg will know what images to load, while during initialization it is not clear what height the image has.
 
 ### Tips
 Due to adding IE8 support, the mechanism works the same, but using HTML5 features are still preferred to prevent issues.
@@ -71,11 +75,11 @@ Due to adding IE8 support, the mechanism works the same, but using HTML5 feature
 
 ### Background-size support
 
-While CSS3 added many features the most important one is to scale correctly background images with ```background-size:cover```. Rimg supports altering the ```background-image``` (CSS3) property depending on the dimensions of the element to adjust. You need to do 1 thing only
+While CSS3 added many features the most important one is to correctly scale background images with ```background-size:cover```. Rimg supports altering the ```background-image``` (CSS3) property depending on the dimensions of the element to adjust. You need to do 1 thing only
 
 ```<div data-background-image="image.jpg"></div>```
 
-Rimg will recognize the ```data-background-image``` property and will alter the background image property depending on the CSS dimensions of the element. Let ```background-size``` determine how to scale the provided image inside the container, but let Rimg determine which file is appropriate.
+Rimg will recognize the ```data-background-image``` property and will alter the background image property depending on the CSS dimensions of the element. Let ```background-size``` (which you define yourself) determine how to scale the provided image inside the container, but let Rimg determine which file is appropriate.
 
 
 # Documentation
@@ -90,7 +94,8 @@ Rimg will recognize the ```data-background-image``` property and will alter the 
 ```javascript
 var RimgOptions = { breakpoint: '-small 480w 1x, -small-retina 480w 2x,
 -regular 768w 1x, -regular-retina 768w 2x,
--large 1024w 1x, -large-retina 1024w 2x',
+-large 1024w 1x, -large-retina 1024w 2x,
+-huge 1200w 1x, -huge-retina 1200w 2x'
 disableIntrospection: false,
 disableLazyLoading: false};
 ```
@@ -101,7 +106,7 @@ To initialize Rimg, you will need to define the breakpoints, but you can also ch
 
 * **disableIntrospection** (Boolean - false) : adjust only the selected images you want to be responsive by your own script.
 * **disableLazyLoading** (Boolean - false) : skip smart loading of images by forcing Rimg load all images when the DOM is loaded.
-* **offset** (Object - {x:100,y:100}) : define the space how quickly Rimg needs to react to load the next image.
+* **offset** (Object - default {x:100,y:100}) : define how quickly Rimg needs to react to load the next image.
 * **complete** (Function - null) : when all images are loaded (Rimg is ready) then this function will be called if set.
 
 ## Breakpoints
@@ -126,12 +131,12 @@ var RimgOptions = { breakpoint: '-small 480w 1x, -small-retina 480w 2x,
 ```
 
 gives you all the freedom by defining 1 (or more) breakpoints with the flexibility to add specific image-files for retina-screens like the iPad, iPhone or Samsung Galaxy S.., etc.
-While the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification only references `2x` as maximum pixel aspect ratio, this is not current. Because devices already exist with `devicePixelRatio` as high as `3x` or even higher (with 1080p screen). Rimg has no restriction on the maximum pixel aspect ratio, just define yourself the ```-small 3x``` or even ```-small 4x``` images. Of course this will have effect on the page-speed (download size), but it is your choice.
+
+While the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification only references `2x` as maximum pixel aspect ratio, this is not current. Because devices already exist with `devicePixelRatio` as high as `3x` or even higher (with a 1080p screen). Rimg has no restriction on the maximum pixel aspect ratio, just define yourself the ```-small 3x``` or even ```-small 4x``` images. Of course this will have effect on the bandwidth (due to its download size), but it is possible.
 
 You can skip the retina option or skip certain breakpoints (`480w` or `768w`) or even add weird ones (like ```-special 456w 1x```).
 
-The `w` in `480w` defines the width property to check. During development of responsive websites I haven't found many examples to use `h` for the height, but I did found issues with javascript returning `0` as the height of non-loaded images; even when the height is set in `%`.
-This is why I provide the option to use `480h` but I do **advise to use the width as a breakpoint** (kind of best practice).
+The `w` in `480w` defines the width property to check. During development of responsive websites I haven't found many examples to use `h` for the height, but I did found issues with javascript returning `0` as the height of non-loaded images; even when the height is set in `%`. This is why I removed height-support in version 2.0 of RIMG,so **use the width as a breakpoint** (kind of best practice).
 
 
 
@@ -141,11 +146,11 @@ To view the examples in the `/test`-directory, clone the project and go to your 
 * run ```npm run check``` to update all npm modules
 * run ```gulp``` to parse ```Rimg.js``` into the correct places
 * run ```npm run server``` to run the test examples on ```http://localhost:8080```
-* run ```npm test``` to run the casperjs tests!
+* run ```npm test``` to run the [Casperjs](http://casperjs.org) tests!
 
 These tasks let you check the examples locally, but you can also see a [demo](http://joeyvandijk.github.io/rimg) online.
 
-Remark: [nodejs](http://nodejs.org) needed!
+Remark: [nodejs](http://nodejs.org) or [iojs](https://iojs.org) needed!
 
 
 
@@ -155,6 +160,7 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
+2.0.0 added [Casperjs](http://casperjs.org) tests + rewrote the workflow + removed height-breakpoints
 1.9.1 ignore empty data-src values  
 1.9.0 support for ```background-size``` (CSS3) + ignore ```svg``` file extension  
 1.7.0 support for ```-320x``` naming of files  
@@ -178,7 +184,6 @@ See the [Wiki](https://github.com/joeyvandijk/rimg/wiki) for more information.
 You can build rimg.js yourself by using ```grunt``` or ```gulp```. Of course install first all the necessary modules with ```npm install```
 
 
-
 # Supports
 * IE8+
 * Chrome
@@ -187,9 +192,10 @@ You can build rimg.js yourself by using ```grunt``` or ```gulp```. Of course ins
 * Android (Chrome / Firefox / default browser)
 * iOS (default browser)
 
+## WORDPRESS
+Rimg is also fully capable to implement in your [Wordpress](https://wordpress.com) setup. For more information check [this wiki page here](wiki/Wordpress).
 
 # Alternatives
-
 Many alternatives are available, but be aware of the differences. Some use APIs that do not have cross-browser support or provide features you do not need. Still there are interesting alternatives to Rimg like:
 
 * [Riloadr](https://github.com/tubalmartin/riloadr) ~ client-side JS-only script
@@ -197,9 +203,3 @@ Many alternatives are available, but be aware of the differences. Some use APIs 
 * [Blazy](http://dinbror.dk/blazy) ~ client-side JS-only script
 * [Echo](https://github.com/toddmotto/echo) ~ client-side JS-only script
 * [BCC Imager](https://github.com/BBC-News/Imager.js) ~ client-side JS-only script
-
-
-# TODO
-* bandwidth detection solution (optional)
-* data-src attribute changed (not-cross browser support?)
-* casperjs - automated tests

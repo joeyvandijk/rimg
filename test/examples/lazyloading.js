@@ -35,7 +35,9 @@ function lazyloadingTest(test,wd,hg,imageType,hits){
             }), 'DEBUG');
         });
     });
-    this.then(function(){
+    this.then(function reload(){
+        casper.addConsoleListener();
+
         casper.reload();
     });
 
@@ -44,40 +46,60 @@ function lazyloadingTest(test,wd,hg,imageType,hits){
     var value;
     var element = 'section > img';
     var totalImages = 4;
-    this.then(function() {
+    this.then(function testProperties() {
         //check images & article images
         value = createList(imageType,totalImages,hits[0]);
         test.assertElementCount(element,totalImages);
         test.assertExists(element,'images are found');
         test.assertEquals(this.getElementsAttribute(element,property),value,'section images (0) okay');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
     });
-    this.then(function(){
+    this.then(function scroll1(){
         casper.scrollTo(0,400);
     });
-    this.then(function() {
+    this.then(function testProperties2() {
         //check images & article images
         value = createList(imageType,totalImages,hits[1]);
         test.assertEquals(this.getElementsAttribute(element,property),value,'section images (400) okay');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
     });
-    this.then(function(){
+    this.then(function scroll2(){
         casper.scrollTo(0,795);
     });
-    this.then(function() {
+    this.then(function testProperties3() {
         //check images & article images
         value = createList(imageType,totalImages,hits[2]);
         test.assertEquals(this.getElementsAttribute(element,property),value,'section images (795) okay');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
     });
-    this.then(function(){
+    this.then(function scroll3(){
         casper.scrollTo(0,4329);
     });
-    this.then(function() {
+    this.then(function testProperties4() {
         //check images & article images
         value = createList(imageType,totalImages,hits[3]);
         test.assertEquals(this.getElementsAttribute(element,property),value,'section images (4329) okay');
+
+        //check for console issues
+        casper.checkConsoleErrors();
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
+
+        //remove listeners
+        casper.removeListener('page.error', failed);
+        casper.removeListener('remote.message', failed);
     });
 };
 
-casper.test.begin('Lazy loading test', 109, function suite(test) {
+casper.test.begin('Lazy loading test', 181, function suite(test) {
     var currentURL = params.url + '/lazyloading.html';
     casper.start(currentURL, function() {
         test.assertTitle('lazy loading (scroll) test', "page title is okay");

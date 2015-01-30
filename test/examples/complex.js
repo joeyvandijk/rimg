@@ -7,12 +7,14 @@ function complexTest(test,wd,hg,firstImageType,secondImageType){
             }), 'DEBUG');
         });
     });
-    this.then(function(){
+    this.then(function reload(){
+        casper.addConsoleListener();
+
         casper.reload();
     });
 
     //check image properties
-    this.then(function() {
+    this.then(function testProperties() {
         //check images & article images
         var property = 'src';
         var element = 'img';
@@ -28,10 +30,18 @@ function complexTest(test,wd,hg,firstImageType,secondImageType){
         value = 'images/image-'+secondImageType+'.jpg';
         element = 'img.second';
         test.assertEquals(this.getElementAttribute(element,property),value,'second image okay');
+
+        //check for console issues
+        casper.checkConsoleErrors(['Image(s) is/are loaded']);
+        test.assertEquals(casper.issues.length,0,'Amount of client console errors is not more than 0.');
+
+        //remove listeners
+        casper.removeListener('page.error', failed);
+        casper.removeListener('remote.message', failed);
     });
 };
 
-casper.test.begin('Complex test', 73, function suite(test) {
+casper.test.begin('Complex test', 91, function suite(test) {
     var currentURL = params.url + '/complex.html';
     casper.start(currentURL, function() {
         test.assertTitle('complex test', "page title is okay");
