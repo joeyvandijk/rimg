@@ -386,6 +386,38 @@
                         }
                     }
                     //not visible so ignore further actions
+                }else if(item.ignore && (item.extension === 'svg' || item.extension === 'gif')){
+                    if(item.background){
+                        var style = item.target.getAttribute('style');
+                        if(style){
+                            var pos = style.indexOf('background-image');
+                            //check if path is different
+                            if(style.indexOf(item.path) === -1){
+                                if(style && pos === -1){
+                                    //some style exist but not background-image
+                                    style = 'background-image: url('+item.path+');'+style;
+                                }else if(style && pos !== -1) {
+                                    //some style definitions already exist
+                                    var backgroundStartPosition = style.substr(pos);
+                                    var backgroundEndPosition = backgroundStartPosition.indexOf(';');
+                                    if (backgroundEndPosition === undefined) {
+                                        backgroundEndPosition = backgroundStartPosition.length;
+                                    }
+                                    style = style.substr(0, pos) + 'background-image: url(' + item.path + ');' + style.substr(backgroundEndPosition+1);
+                                }
+                                item.target.setAttribute('style',style);
+                            }
+                        }else{
+                            //no styling added as a node-style-attribute
+                            style = 'background-image: url('+item.path+');';
+                            item.target.setAttribute('style',style);
+                        }
+                    }else{
+                        //just copy assets due to SVG/GIF
+                        if(item.target.getAttribute('src') !== item.path){
+                            item.target.setAttribute('src',item.path);
+                        }
+                    }
                 }
                 i++;
             }
@@ -514,7 +546,7 @@
         }
 
         return {
-            version: '2.0.0',
+            version: '2.0.1',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -549,11 +581,10 @@
                 if(value.disableLazyLoading === true){
                     hidden.disableLazyLoading = true;
                 }
-                if(value.offset !== null && typeof value.offset.x === 'number' && typeof value.offset.y === 'number'){
+                if(value.offset !== undefined && typeof value.offset.x === 'number' && typeof value.offset.y === 'number'){
                     hidden.offset.x = value.offset.x;
                     hidden.offset.y = value.offset.y;
                 }
-
                 if(hidden.status === 'ready' && !hidden.disableIntrospection){
                     //save dimensions
                     checkDimensions();

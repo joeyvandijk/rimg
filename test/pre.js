@@ -132,7 +132,7 @@ casper.checkSVG = function(test,wd,hg,imageType){
             switch(i){
                 case 0:
                     //data-src="*.svg"
-                    test.assertEquals(list[i],'','svg + data-src property');
+                    test.assertEquals(list[i],'images/image.svg','svg + data-src property');
                     break;
                 case 1:
                     //src="*.svg"
@@ -145,6 +145,13 @@ casper.checkSVG = function(test,wd,hg,imageType){
             }
             i++;
         }
+
+        //check background-image (with svg)
+        element = 'div';
+        property = 'style';
+        test.assertElementCount(element,1);
+        //data-background-image="*.svg" style="width:200px;height:50px;"
+        test.assertEquals(this.getElementsAttribute(element,property)[0],'background-image: url(images/image.svg);width:200px;height:50px;','div + data-background-image property (svg)');
 
         //check for console issues
         casper.checkConsoleErrors();

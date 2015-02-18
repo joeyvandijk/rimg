@@ -13,7 +13,6 @@
             Rimg.configure({
                 breakpoint:'-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge 1200w 1x, -huge-retina 1200w 2x'
             });
-            Rimg.execute(find('img'));
         }
 
         window.onresize = function(e){
@@ -23,6 +22,7 @@
         var item = 0;
 
         function find(identifier){
+            console.log('find',identifier,':',document.querySelector(identifier));
             if(document.querySelector && document.querySelector(identifier)){
                 return document.querySelector(identifier);
             }else{
