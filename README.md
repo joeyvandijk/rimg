@@ -160,9 +160,9 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
-2.0.1 fixed issue with SVG/GIF not being copied/executed
-2.0.0 added [Casperjs](http://casperjs.org) tests + rewrote the workflow + removed height-breakpoints
-1.9.1 ignore empty data-src values
+2.0.1 fixed issue with SVG/GIF not being copied/executed  
+2.0.0 added [Casperjs](http://casperjs.org) tests + rewrote the workflow + removed height-breakpoints  
+1.9.1 ignore empty data-src values  
 1.9.0 support for ```background-size``` (CSS3) + ignore ```svg``` file extension  
 1.7.0 support for ```-320x``` naming of files  
 1.6.0 added complete-event + gulpjs  
