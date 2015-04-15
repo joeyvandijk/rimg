@@ -546,7 +546,7 @@
         }
 
         return {
-            version: '2.0.1',
+            version: '2.0.2',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -694,8 +694,17 @@
                     event('add','DOMNodeInserted',nodeInserted.bind(base));
                     //ignore DOMSubtreeModified while DOMAttrModified is used, while performance does not allow 2 listeners
                 }else{
+                    //create action
                     hidden.observer = new MutationObserver(function(mutations) {
                         find();
+                    });
+
+                    //listen
+                    hidden.observer.observe(document, {
+                        attributes: true,
+                        childList: true,
+                        characterData: true,
+                        subtree:true
                     });
                 }
                 hidden.status = 'progress';

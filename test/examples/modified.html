@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>modified test</title>
+    <script>
+        var time = Date.now();
+        var RimgOptions = {
+            breakpoint: '-tiny 320w 1x, -tiny-retina 320w 2x, -small 480w 1x, -small-retina 480w 2x, -medium 600w 1x, -medium-retina 600w 2x, -regular 768w 1x, -regular-retina 768w 2x, -large 1024w 1x, -large-retina 1024w 2x, -huge 1200w 1x, -huge-retina 1200w 2x'
+        }
+    </script>
+    <script src="js/rimg.min.js"></script>
+    <script>
+        function find(identifier){
+            if(document.querySelector && document.querySelector(identifier)){
+                return document.querySelector(identifier);
+            }else{
+                if(identifier.indexOf('#') != -1){
+                    return document.getElementById(identifier);
+                }else{
+                    return document.getElementsByClassName(identifier)[0];
+                }
+            }
+        }
+
+        var adjustment = 0;
+        function click(){
+            var test = find('div');
+            if(adjustment % 2){
+                test.setAttribute('class','');
+            }else{
+                test.setAttribute('class','big');
+            }
+            adjustment++;
+        }
+    </script>
+    <style type="text/css">
+        body,html{
+            margin:0 auto;
+            padding:0;
+        }
+        h1,p{
+            margin:5px;
+        }
+        img{
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 0px;
+            border-top: 1px solid green;
+            border-bottom: 1px solid green;
+        }
+        div{
+            width:50%;
+        }
+        div.big{
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+<h1>Modified welcome</h1>
+<p>Just a modify test with responsive images. <a href="javascript:click();" class="manual">Click</a> to change the size of the container the image resides in</p>
+<div>
+    <img data-src="images/image.jpg"/>
+</div>
+<!-- OPTIONAL: -->
+<noscript>
+    <img src="images/image-small.jpg">
+</noscript>
+</body>
+</html>
