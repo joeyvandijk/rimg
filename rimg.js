@@ -357,6 +357,7 @@
                                 break;
                             }else if(wd < bp.width){
                                 //border found
+                                breakpoint = bp;
                                 break;
                             }
                             b++;
