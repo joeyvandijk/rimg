@@ -9,8 +9,8 @@
     "repository": "",
     "author": "Joey van Dijk",
     "dependencies":{
-        "send":"0.11.x",
-        "url":"0.10.x"
+        "send":"0.13.x",
+        "url":"0.11.x"
     },
     "license": "TT"
 }

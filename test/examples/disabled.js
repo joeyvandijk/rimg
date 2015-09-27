@@ -85,15 +85,15 @@ casper.test.begin('Disabled test', 145, function suite(test) {
         casper.disabledTest(test, 599, 480, 'tiny');
         casper.disabledTest(test, 600, 480, 'tiny');
         casper.disabledTest(test, 601, 480, 'tiny');
-        casper.disabledTest(test, 767, 600, 'tiny');
-        casper.disabledTest(test, 768, 600, 'tiny');
-        casper.disabledTest(test, 769, 600, 'tiny');
-        casper.disabledTest(test, 1023, 768, 'small');
-        casper.disabledTest(test, 1024, 768, 'small');
-        casper.disabledTest(test, 1025, 768, 'small');
-        casper.disabledTest(test, 1199, 768, 'small');
-        casper.disabledTest(test, 1200, 768, 'small');
-        casper.disabledTest(test, 1201, 768, 'small');
+        casper.disabledTest(test, 767, 600, 'small');
+        casper.disabledTest(test, 768, 600, 'small');
+        casper.disabledTest(test, 769, 600, 'small');
+        casper.disabledTest(test, 1023, 768, 'medium');
+        casper.disabledTest(test, 1024, 768, 'medium');
+        casper.disabledTest(test, 1025, 768, 'medium');
+        casper.disabledTest(test, 1199, 768, 'medium');
+        casper.disabledTest(test, 1200, 768, 'medium');
+        casper.disabledTest(test, 1201, 768, 'medium');
     });
 
     //start

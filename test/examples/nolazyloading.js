@@ -66,22 +66,22 @@ casper.test.begin('No lazy loading test', 145, function suite(test) {
     casper.then(function() {
         casper.nolazyloadingTest(test, 319, 480, 'tiny', 'tiny');
         casper.nolazyloadingTest(test, 320, 480, 'tiny', 'tiny');
-        casper.nolazyloadingTest(test, 321, 480, 'tiny', 'tiny');
-        casper.nolazyloadingTest(test, 479, 480, 'tiny', 'tiny');
+        casper.nolazyloadingTest(test, 321, 480, 'small', 'tiny');
+        casper.nolazyloadingTest(test, 479, 480, 'small', 'tiny');
         casper.nolazyloadingTest(test, 480, 480, 'small', 'tiny');
-        casper.nolazyloadingTest(test, 481, 480, 'small', 'tiny');
-        casper.nolazyloadingTest(test, 599, 480, 'small', 'tiny');
+        casper.nolazyloadingTest(test, 481, 480, 'medium', 'tiny');
+        casper.nolazyloadingTest(test, 599, 480, 'medium', 'tiny');
         casper.nolazyloadingTest(test, 600, 480, 'medium', 'tiny');
-        casper.nolazyloadingTest(test, 601, 480, 'medium', 'tiny');
-        casper.nolazyloadingTest(test, 767, 600, 'medium', 'tiny');
-        casper.nolazyloadingTest(test, 768, 600, 'regular', 'tiny');
-        casper.nolazyloadingTest(test, 769, 600, 'regular', 'tiny');
-        casper.nolazyloadingTest(test, 1023, 768, 'regular', 'small');
-        casper.nolazyloadingTest(test, 1024, 768, 'large', 'small');
-        casper.nolazyloadingTest(test, 1025, 768, 'large', 'small');
-        casper.nolazyloadingTest(test, 1199, 768, 'large', 'small');
-        casper.nolazyloadingTest(test, 1200, 1024, 'huge', 'small');
-        casper.nolazyloadingTest(test, 1201, 1024, 'huge', 'small');
+        casper.nolazyloadingTest(test, 601, 480, 'regular', 'tiny');
+        casper.nolazyloadingTest(test, 767, 600, 'regular', 'small');
+        casper.nolazyloadingTest(test, 768, 600, 'regular', 'small');
+        casper.nolazyloadingTest(test, 769, 600, 'large', 'small');
+        casper.nolazyloadingTest(test, 1023, 768, 'large', 'medium');
+        casper.nolazyloadingTest(test, 1024, 768, 'large', 'medium');
+        casper.nolazyloadingTest(test, 1025, 768, 'huge', 'medium');
+        casper.nolazyloadingTest(test, 1199, 768, 'huge', 'medium');
+        casper.nolazyloadingTest(test, 1200, 1024, 'huge', 'medium');
+        casper.nolazyloadingTest(test, 1201, 1024, 'huge', 'medium');
     });
 
     //start

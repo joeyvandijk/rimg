@@ -254,10 +254,13 @@
                     hidden.images.push(obj);
                     reference = obj;
                 }else{
+                    if(hidden.disableIntrospection) {
+                        reference.enabled = !hidden.disableIntrospection;
+                    }
+
                     //found, but check if properties are up-to-date
                     getType(reference,'img',item);
                 }
-
                 //if disableIntrospection=true, only update/show the one that is enabled
                 if(target && reference.target === target && hidden.disableIntrospection){
                     reference.enabled = true;
@@ -367,23 +370,26 @@
                             breakpoint = hidden.breakpoints[0];
                         }
 
-                        //all information gathered, set new src-property
-                        var changed = false;
-                        var newURL = file+breakpoint.getSrc(ratio)+'.'+extension;
-                        if(!item.background && item.target.getAttribute('src') !== newURL){
-                            //set the appropriate version of the image
-                            item.target.setAttribute('src',newURL);
-                            changed = true;
-                        }else if(item.background && item.target.style.backgroundImage.indexOf(newURL) === -1){
-                            item.target.style.backgroundImage = 'url('+newURL+')';
-                            changed = true;
-                        }
-                        if(changed){
-                            //the source image has changed, so check the load to execute final complete function
-                            hidden.imageEvents.changed++;
+                        // empty when manual setup
+                        if (breakpoint) {
+                            //all information gathered, set new src-property
+                            var changed = false;
+                            var newURL = file+breakpoint.getSrc(ratio)+'.'+extension;
+                            if(!item.background && item.target.getAttribute('src') !== newURL){
+                                //set the appropriate version of the image
+                                item.target.setAttribute('src',newURL);
+                                changed = true;
+                            }else if(item.background && item.target.style.backgroundImage.indexOf(newURL) === -1){
+                                item.target.style.backgroundImage = 'url('+newURL+')';
+                                changed = true;
+                            }
+                            if(changed){
+                                //the source image has changed, so check the load to execute final complete function
+                                hidden.imageEvents.changed++;
 
-                            event('add','load',imageEvent,item.target);
-                            event('add','error',imageEvent,item.target);
+                                event('add','load',imageEvent,item.target);
+                                event('add','error',imageEvent,item.target);
+                            }
                         }
                     }
                     //not visible so ignore further actions
@@ -547,7 +553,7 @@
         }
 
         return {
-            version: '2.0.2',
+            version: '2.1.0',
             execute: function(target){
                 //only possible when DOM is loaded and no errors appeared
                 if(hidden.status === 'error'){
@@ -560,7 +566,6 @@
                     console.log('(remark) Rimg.execute(): no breakpoints defined (yet), probably because of manual control.');
                     return;
                 }
-
                 //only need
                 find(target);
             },

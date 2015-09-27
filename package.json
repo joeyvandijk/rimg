@@ -11,15 +11,15 @@
   "repository": "",
   "author": "Joey van Dijk",
   "dependencies": {
-    "del": "1.1.x",
-    "gulp": "3.8.x",
-    "gulp-gzip": "0.0.x",
-    "gulp-jshint": "1.9.x",
-    "gulp-notify": "2.1.x",
+    "del": "2.0.x",
+    "gulp": "3.9.x",
+    "gulp-gzip": "1.2.x",
+    "gulp-jshint": "1.11.x",
+    "gulp-notify": "2.2.x",
     "gulp-rename": "1.2.x",
-    "gulp-uglify": "1.0.x",
+    "gulp-uglify": "1.4.x",
     "gulp-util": "3.0.x",
-    "jshint-stylish": "^1.0.0"
+    "jshint-stylish": "^2.0.0"
   },
-  "license": "BSD"
+  "license": "BSD-2-Clause"
 }

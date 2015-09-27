@@ -6,7 +6,7 @@ It is based on the idea that when the DOM is loaded, it will traverse the DOM, l
 Rimg uses an adapted version of the [srcset](http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/) specification, while you don't need to define with every image 3(+) breakpoints. Just provide the image basename and let Rimg do the adjustments.
 
 See the [demo](http://joeyvandijk.github.io/rimg) or look [here](https://github.com/joeyvandijk/rimg#breakpoints) how the breakpoints are used.
-Current version: **v2.0.2**.
+Current version: **v2.1.0**.
 
 ## Features
 * responsive (background) images that respond to **retina**-screens, **browser-resizes**, **DOMContentLoaded**-events and **DOM-changes**
@@ -16,7 +16,7 @@ Current version: **v2.0.2**.
 * **no user agent sniffing** and **no cookies** just JS reacting on the environment it is executed in.
 * **reconfigure** after Rimg is loaded/executed by using ```Rimg.configure({breakpoint:'',...});```
 * **art direction support**, respect the chosen filenaming strategy and alter your ```<img>``` in any way (square?) and save the file used in that breakpoint and everything works!
-* **small** package : 6,0 kB (gzip) or 8,8 kB (plain)
+* **small** package : 6,4 kB (gzip) or 9,6 kB (plain)
 
 
 ### Nice to know features
@@ -160,6 +160,7 @@ Please do test, check and create pull requests/issues/remarks to further extend/
 
 
 # Changelog
+2.1.0 fixed blurry images by scaling down and not up (more bandwidth usage!)  
 2.0.2 fixed MutationObserver bug  
 2.0.1 fixed issue with SVG/GIF not being copied/executed  
 2.0.0 added [Casperjs](http://casperjs.org) tests + rewrote the workflow + removed height-breakpoints  

@@ -53,21 +53,21 @@ casper.test.begin('Complex test', 91, function suite(test) {
         casper.complexTest(test, 319, 480, 'tiny', 'tiny');
         casper.complexTest(test, 320, 480, 'tiny', 'tiny');
         casper.complexTest(test, 321, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 479, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 480, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 481, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 599, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 600, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 601, 480, 'tiny', 'tiny');
-        casper.complexTest(test, 767, 600, 'tiny', 'small');
-        casper.complexTest(test, 768, 600, 'tiny', 'small');
-        casper.complexTest(test, 769, 600, 'tiny', 'small');
-        casper.complexTest(test, 1023, 768, 'tiny', 'medium');
-        casper.complexTest(test, 1024, 768, 'tiny', 'medium');
-        casper.complexTest(test, 1025, 768, 'tiny', 'medium');
-        casper.complexTest(test, 1199, 768, 'tiny', 'regular');
-        casper.complexTest(test, 1200, 1024, 'tiny', 'regular');
-        casper.complexTest(test, 1201, 1024, 'tiny', 'regular');
+        casper.complexTest(test, 479, 480, 'tiny', 'small');
+        casper.complexTest(test, 480, 480, 'tiny', 'small');
+        casper.complexTest(test, 481, 480, 'tiny', 'small');
+        casper.complexTest(test, 599, 480, 'tiny', 'small');
+        casper.complexTest(test, 600, 480, 'tiny', 'small');
+        casper.complexTest(test, 601, 480, 'tiny', 'small');
+        casper.complexTest(test, 767, 600, 'tiny', 'medium');
+        casper.complexTest(test, 768, 600, 'tiny', 'medium');
+        casper.complexTest(test, 769, 600, 'tiny', 'medium');
+        casper.complexTest(test, 1023, 768, 'tiny', 'regular');
+        casper.complexTest(test, 1024, 768, 'tiny', 'regular');
+        casper.complexTest(test, 1025, 768, 'tiny', 'regular');
+        casper.complexTest(test, 1199, 768, 'tiny', 'large');
+        casper.complexTest(test, 1200, 1024, 'tiny', 'large');
+        casper.complexTest(test, 1201, 1024, 'tiny', 'large');
     });
 
     //start
