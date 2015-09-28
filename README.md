@@ -205,4 +205,4 @@ Many alternatives are available, but be aware of the differences. Some use APIs 
 * [Responsive.io](https://responsive.io) ~ service
 * [Blazy](http://dinbror.dk/blazy) ~ client-side JS-only script
 * [Echo](https://github.com/toddmotto/echo) ~ client-side JS-only script
-* [BCC Imager](https://github.com/BBC-News/Imager.js) ~ client-side JS-only script
+* [BBC Imager](https://github.com/BBC-News/Imager.js) ~ client-side JS-only script
