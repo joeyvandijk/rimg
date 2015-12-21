@@ -1,7 +1,33 @@
 'use strict';
 
+/**
+ * IE compatible replacement for window.getComputedStyle()
+ * 
+ * @param oElm
+ * @param css3Prop
+ * @returns {String}
+ * @see http://www.htmlgoodies.com/html5/css/referencing-css3-properties-using-javascript.html#fbid=8Q9NeoCMRwZ
+ * 
+ */
+function getStyle(oElm, css3Prop) {
+  var strValue = "";
+
+  if (window.getComputedStyle) {
+    strValue = getComputedStyle(oElm).getPropertyValue(css3Prop);
+  }
+  // IE
+  else if (oElm.currentStyle) {
+    try {
+      strValue = oElm.currentStyle[css3Prop];
+    } catch (e) {
+    }
+  }
+
+  return strValue;
+}
+
 !function(){
-    if(!console){
+    if(!window.console){
         console = {
             log: function(){},
             error: function(){}
@@ -343,7 +369,7 @@
                             }else{
                                 property = 'maxWidth';
                             }
-                            size.x = window.getComputedStyle(item.target,null)[property];
+                            size.x = getStyle(item.target,property);
                             size.x = size.x.replace('px','');
                             size.x = Number(size.x);
                         }
@@ -510,7 +536,7 @@
         function getExtension(value){
             //find the extension of the value (URL)
             if(value){
-                return value.substr(value.lastIndexOf('.') + 1).toLowerCase();
+                return value.substr(value.lastIndexOf('.') + 1);
             }
             return null;
         }
