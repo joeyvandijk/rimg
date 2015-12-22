@@ -13,7 +13,7 @@ function getStyle(oElm, css3Prop) {
   var strValue = "";
 
   if (window.getComputedStyle) {
-    strValue = getComputedStyle(oElm).getPropertyValue(css3Prop);
+    strValue = getComputedStyle(oElm)[css3Prop];
   }
   // IE
   else if (oElm.currentStyle) {
