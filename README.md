@@ -1,4 +1,4 @@
-# ** [ DEPRECATED ] **
+# [ DEPRECATED ]
 
 Due to limited time, lack of contributions and also due to the advancements of alternatives I've stopped supporting this library. Fork it and adjust it as you wish, but I think [BBC Imager](https://github.com/BBC-News/Imager.js) or [Blazy](https://github.com/dinbror/blazy/) are the best alternatives to use. And due to the advancements in browsers (```<picture>``` / ```srcset```) the need for a library as this will only decline.
 
